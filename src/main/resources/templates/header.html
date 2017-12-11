@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Header</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/css/flag-icon.css"/>
+
+</head>
+<body>
+
+<ul id="langues" class="dropdown-content">
+    <li><a onclick="change('fr')">
+        <span class="flag-icon flag-icon-fr"></span>
+        <span th:text="#{lang.fr}"></span>
+    </a></li>
+    <li><a onclick="change('en')">
+        <span class="flag-icon flag-icon-gb"></span>
+        <span th:text="#{lang.en}"></span>
+    </a></li>
+</ul>
+
+<nav class="light-green">
+    <div class="nav-wrapper">
+        <a href="#!" class="brand-logo">Forum</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href=""><span th:text="#{login}"></span></a></li>
+            <li><a class="dropdown-button" href="#!" data-activates="langues">
+                <span th:text="#{languages}"></span>
+                <i class="material-icons right">arrow_drop_down</i>
+            </a></li>
+        </ul>
+    </div>
+
+</nav>
+
+
+</body>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script>
+    function change(newLang){
+        var url = new URL(location.href);
+        url.searchParams.set('lang', newLang);
+        window.location.replace(url)
+    }
+</script>
+
+</html>
