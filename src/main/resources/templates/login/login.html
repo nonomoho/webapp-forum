@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:text-align="http://www.w3.org/1999/xhtml"
       layout:decorator="layout/main">
 <head>
     <title>Login</title>
@@ -9,14 +9,23 @@
 <section layout:fragment="mainContent">
 
     <span th:if="${(param.error != null)}">
-        <div class="alert alert-danger">
-            Invalid username and password.
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel red darken-1 center-align">
+                <span class="white-text">Invalid username and password.</span>
+            </div>
         </div>
+    </div>
     </span>
+
     <span th:if="${(param.logout != null)}">
-        <div class="alert alert-success">
-            Successfull logout
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel green darken-1 center-align">
+                <span class="white-text">Successfull logout</span>
+            </div>
         </div>
+    </div>
     </span>
 
     <form name="loginForm" class="col s12" action="#" th:action="@{/login}" method="post">
