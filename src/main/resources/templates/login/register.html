@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main">
+<head>
+    <title>Créer compte</title>
+</head>
+
+
+<section layout:fragment="mainContent">
+
+    <form class="col s12" action="#" th:action="@{/register}" th:object="${user}" method="post">
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="pseudo" type="text" th:field="*{pseudo}"/>
+                <label for="pseudo"><span th:text="#{register.username}"></span></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="email" type="email" th:field="*{email}"/>
+                <label for="email"><span th:text="#{register.email}"></span></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password" type="password"/>
+                <label for="password"><span th:text="#{register.password}"></span></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password_confirm" type="password"/>
+                <label for="password_confirm"><span th:text="#{register.password_confirm}"></span></label>
+            </div>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="action">
+            <span>Ajouter</span>
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+
+</section>
+
+
+</html>

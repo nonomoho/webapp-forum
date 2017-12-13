@@ -1,13 +1,21 @@
 package com.miage.m2.webappforum.control;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import com.miage.m2.webappforum.entity.Utilisateur;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@org.springframework.stereotype.Controller
+@Controller
 public class ControllerLogin {
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @GetMapping(value = "/login")
     public String login() {
         return "login/login";
+    }
+
+    @GetMapping(value = "/register")
+    public String register(Model model) {
+        model.addAttribute("user", new Utilisateur());
+        return "login/register";
     }
 }
