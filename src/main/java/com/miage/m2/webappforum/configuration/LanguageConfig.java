@@ -20,7 +20,7 @@ public class LanguageConfig extends WebMvcConfigurerAdapter {
     @Override
     public Validator getValidator() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:label");
+        messageSource.setBasename("classpath:messages");
         messageSource.setFallbackToSystemLocale(false);
 
         LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
