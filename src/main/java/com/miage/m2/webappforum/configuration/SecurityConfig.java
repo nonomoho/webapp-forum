@@ -1,4 +1,4 @@
-package com.miage.m2.webappforum.Configuration;
+package com.miage.m2.webappforum.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
