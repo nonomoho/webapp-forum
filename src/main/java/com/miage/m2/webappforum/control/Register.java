@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
-public class RegisterController {
+public class Register {
 
     @Autowired
     UtilisateurRepository ur;

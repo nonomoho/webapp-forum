@@ -14,7 +14,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @Configuration
-public class LanguageConfig extends WebMvcConfigurerAdapter {
+public class Language extends WebMvcConfigurerAdapter {
 
 
     @Override
