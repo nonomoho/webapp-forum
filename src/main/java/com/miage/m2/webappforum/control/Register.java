@@ -34,6 +34,12 @@ public class Register {
         if (!confirm.equals(user.getPassword())) {
             result.rejectValue("password", "notSamePassword");
         }
+        if (ur.existsByPseudo(user.getPseudo())){
+            result.rejectValue("psegudo", "register.userNameAlreadyExist");
+        }
+        if (ur.existsByEmail(user.getEmail())){
+            result.rejectValue("email", "register.mailAlreadyExist");
+        }
         if (result.hasErrors()) {
             model.addAttribute("user", user);
             return "login/register";
