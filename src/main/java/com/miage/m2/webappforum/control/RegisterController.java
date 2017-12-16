@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
-public class Register {
+public class RegisterController {
 
     @Autowired
     UtilisateurRepository ur;
@@ -35,7 +35,7 @@ public class Register {
             result.rejectValue("password", "notSamePassword");
         }
         if (ur.existsByPseudo(user.getPseudo())){
-            result.rejectValue("psegudo", "register.userNameAlreadyExist");
+            result.rejectValue("pseudo", "register.userNameAlreadyExist");
         }
         if (ur.existsByEmail(user.getEmail())){
             result.rejectValue("email", "register.mailAlreadyExist");

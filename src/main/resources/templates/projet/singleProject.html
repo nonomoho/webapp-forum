@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:text-align="http://www.w3.org/1999/xhtml"
+      layout:decorator="layout/main">
+<head>
+    <title>Ajouter projet</title>
+</head>
+
+<section layout:fragment="mainContent">
+    <form class="col s12" action="#" th:action="@{/addProject}" th:object="${project}" method="post">
+
+        <!-- NOM -->
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="nom" type="text" th:field="*{nom}"/>
+                <label for="nom"><span th:text="#{register.username}"></span></label>
+            </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="description" class="materialize-textarea" th:field="*{description}"></textarea>
+                <label for="description">Description</label>
+            </div>
+        </div>
+
+
+        <!-- DROITS DES UTILISATEURS -->
+        <table class="striped">
+            <!-- Titre -->
+            <thead>
+            <tr>
+                <th hidden="true">Id</th>
+                <th>Pseudo</th>
+                <th>Droit de lecture</th>
+                <th>Droit d'écriture</th>
+            </tr>
+
+            <tr>
+                <th hidden="true"></th>
+                <th>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">search</i>
+                            <input id="search" type="text" class="search" placeholder="search for pseudo"/>
+                        </div>
+                    </div>
+                </th>
+                <th>
+                    <p>
+                        <input type="checkbox" class="filled-in" th:id="read-all"
+                               onclick="checkAll(this, 'read-right')"/>
+                        <label th:for="read-all">Tout le monde</label>
+                    </p>
+                </th>
+                <th>
+                    <p>
+                        <input type="checkbox" class="filled-in" th:id="write-all"
+                               onclick="checkAll(this, 'write-right')"/>
+                        <label th:for="write-all">Tout le monde</label>
+                    </p>
+                </th>
+            </tr>
+            </thead>
+
+            <!-- All users -->
+            <tbody id="usersTable">
+            <tr th:each="user : ${users}">
+                <td hidden="true" th:text="${user.id}"/>
+                <td id="userPseudo" th:text="${user.pseudo}"/>
+                <td>
+                    <p>
+                        <input type="checkbox" class="filled-in read-right" th:id="${'read-' + user.id}"
+                               th:field="*{readUsers}" th:value="${user.id}"/>
+                        <label th:for="${'read-' + user.id}"/>
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        <input type="checkbox" class="filled-in write-right" th:id="${'write-' + user.id}"
+                               th:field="*{writeUsers}" th:value="${user.id}"/>
+                        <label th:for="${'write-' + user.id}"/>
+                    </p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <!-- SUBMIT -->
+        <button class="btn waves-effect waves-light" type="submit" name="action">
+            <span th:text="#{register.button}"></span>
+            <i class="material-icons right">send</i>
+        </button>
+
+    </form>
+</section>
+
+<script layout:fragment="script">
+
+    //filter table rows with search input value
+    $("#search").keyup(function (event) {
+        var value = $(this).val().toLowerCase();
+        $("#usersTable tr").filter(function () {
+            $(this).toggle(this.getElementsByTagName("td")[1].innerHTML.toLowerCase().indexOf(value) > -1);
+        });
+
+
+    });
+
+    //prevent form from being submitted when press enter in search field
+    $("#search").keydown(function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+        }
+    });
+
+    //check or uncheck all read or write checkbox
+    function checkAll(element, type) {
+        $("." + type).prop('checked', element.checked);
+    }
+
+    //remove hidden fields that prevent checkbox from showing
+    $(document).ready(function() {
+        $('input[name=_readUsers]').remove();
+        $('input[name=_writeUsers]').remove();
+    });
+
+</script>
+
+
+</html>
