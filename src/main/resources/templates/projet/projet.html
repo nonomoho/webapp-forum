@@ -20,8 +20,11 @@
         <tbody>
         <tr th:each="projet : ${projets}">
             <td>
-                <p th:text="${projet?.nom}"/>
-                <p th:text="${description?.nom}"/>
+                <h5 th:text="${projet?.nom}"/>
+                <p th:text="${projet?.description}"/>
+            </td>
+            <td>
+                <p th:text="${#lists.size(projet.topicList)}"/>
             </td>
         </tr>
         </tbody>
