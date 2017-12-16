@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,22 +26,33 @@ public class ProjetController {
         return "projet/projet";
     }
 
-    @GetMapping(value = "/addProject")
+    @GetMapping(value = "/projets/add")
     public String addProjectForm(Model model) {
         model.addAttribute("users", ur.findAll());
         model.addAttribute("project", new Projet());
         return "projet/singleProject";
     }
 
-    @PostMapping(value = "/addProject")
+    @PostMapping(value = "/projets/save")
     public String addProject(Model model, @ModelAttribute("project") @Valid Projet project, BindingResult result) {
+        project.setNom(project.getNom().trim().toUpperCase());
+        if (project.getId().isEmpty() && pr.existsByNom(project.getNom())) {
+            result.rejectValue("nom", "project.nameAlreadyExist");
+        }
         if (result.hasErrors()) {
             model.addAttribute("project", project);
             return "projet/singleProject";
         } else {
             pr.save(project);
-            return "redirect:/login";
+            return "redirect:/projets";
         }
+    }
+
+    @GetMapping(value = "/projets/edit/{idProjet}")
+    public String editProjetForm(Model model, @PathVariable("idProjet") String idProjet) {
+        model.addAttribute("users", ur.findAll());
+        model.addAttribute("project", pr.findOne(idProjet));
+        return "projet/singleProject";
     }
 
 }

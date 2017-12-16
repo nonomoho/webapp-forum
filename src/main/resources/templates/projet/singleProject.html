@@ -7,10 +7,23 @@
 </head>
 
 <section layout:fragment="mainContent">
-    <form class="col s12" action="#" th:action="@{/addProject}" th:object="${project}" method="post">
+    <form class="col s12" action="#" th:action="@{/projets/save}" th:object="${project}" th:method="post">
+
+        <!-- ID -->
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="id" hidden="true" th:field="*{id}"/>
+            </div>
+        </div>
 
         <!-- NOM -->
         <div class="row">
+            <div th:if="${#fields.hasErrors('nom')}">
+                <div class="col s12 card-panel red darken-1 center-align">
+                    <span th:errors="*{nom}"/>
+                </div>
+            </div>
+
             <div class="input-field col s12">
                 <input id="nom" type="text" th:field="*{nom}"/>
                 <label for="nom"><span th:text="#{project.name}"></span></label>
@@ -67,7 +80,6 @@
             <!-- All users -->
             <tbody id="usersTable">
             <tr th:each="user : ${users}">
-                <td hidden="true" th:text="${user.id}"/>
                 <td id="userPseudo" th:text="${user.pseudo}"/>
                 <td>
                     <p>
@@ -87,10 +99,9 @@
             </tbody>
         </table>
 
-
         <!-- SUBMIT -->
         <button class="btn waves-effect waves-light" type="submit" name="action">
-            <span th:text="#{register.button}"></span>
+            <span th:text="*{id} != null ? #{edit} : #{add}"></span>
             <i class="material-icons right">send</i>
         </button>
 
