@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main">
+<head>
+    <title>Projet</title>
+</head>
+
+
+<section layout:fragment="mainContent">
+
+    <table class="striped">
+        <thead>
+        <tr>
+            <th><span th:text="#{project.name}"></span></th>
+            <th><span th:text="#{project.topic}"></span></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="projet : ${projets}">
+            <td>
+                <p th:text="${projet?.nom}"/>
+                <p th:text="${description?.nom}"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
+</html>
