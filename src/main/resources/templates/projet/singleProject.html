@@ -13,7 +13,7 @@
         <div class="row">
             <div class="input-field col s12">
                 <input id="nom" type="text" th:field="*{nom}"/>
-                <label for="nom"><span th:text="#{register.username}"></span></label>
+                <label for="nom"><span th:text="#{project.name}"></span></label>
             </div>
         </div>
 
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="input-field col s12">
                 <textarea id="description" class="materialize-textarea" th:field="*{description}"></textarea>
-                <label for="description">Description</label>
+                <label for="description"><span th:text="#{project.description}"/></label>
             </div>
         </div>
 
@@ -32,9 +32,9 @@
             <thead>
             <tr>
                 <th hidden="true">Id</th>
-                <th>Pseudo</th>
-                <th>Droit de lecture</th>
-                <th>Droit d'écriture</th>
+                <th><span th:text="#{login.login}"/></th>
+                <th><span th:text="#{right.read}"/></th>
+                <th><span th:text="#{right.write}"/></th>
             </tr>
 
             <tr>
@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">search</i>
-                            <input id="search" type="text" class="search" placeholder="search for pseudo"/>
+                            <input id="search" type="text" class="search" th:placeholder="#{search}"/>
                         </div>
                     </div>
                 </th>
@@ -51,14 +51,14 @@
                     <p>
                         <input type="checkbox" class="filled-in" th:id="read-all"
                                onclick="checkAll(this, 'read-right')"/>
-                        <label th:for="read-all">Tout le monde</label>
+                        <label th:for="read-all"><span th:text="#{everybody}"/></label>
                     </p>
                 </th>
                 <th>
                     <p>
                         <input type="checkbox" class="filled-in" th:id="write-all"
                                onclick="checkAll(this, 'write-right')"/>
-                        <label th:for="write-all">Tout le monde</label>
+                        <label th:for="write-all"><span th:text="#{everybody}"/></label>
                     </p>
                 </th>
             </tr>
