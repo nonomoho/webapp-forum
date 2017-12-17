@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Layout</title>
@@ -29,8 +30,21 @@
         <div class="nav-wrapper">
             <a th:href="@{/}" class="brand-logo">Forum</a>
             <ul class="right hide-on-med-and-down">
-                <li><a th:href="@{/login}"><span th:text="#{login}"></span></a></li>
-                <li><a th:href="@{/register}"><span th:text="#{register}"></span></a></li>
+                <li sec:authorize="isAuthenticated()"><span th:text="#{hello} + ' '"/><span sec:authentication="name"/>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <form method="post" action="/logout" id="logout">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <a onclick="$('#logout').submit()" th:text="#{logout}"/>
+                    </form>
+                </li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/projets}"><span th:text="#{projects}"></span></a>
+                </li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/followedTopics}"><span
+                        th:text="#{followedTopics}"></span></a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><span th:text="#{login}"></span></a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}"><span th:text="#{register}"></span></a>
+                </li>
                 <li><a class="dropdown-button" href="#!" data-activates="langues">
                     <span th:text="#{languages}"></span>
                     <i class="material-icons right">arrow_drop_down</i>

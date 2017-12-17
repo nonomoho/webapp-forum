@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class TopicController {
@@ -21,6 +22,15 @@ public class TopicController {
     @Autowired
     ProjetRepository pr;
 
+
+    @GetMapping(value = "/followedTopics")
+    public String getFollowedTopics(Model model) {
+        //TODO use real user in session
+        Utilisateur utilisateur = new Utilisateur();
+        Set<Topic> topicList = utilisateur.getFollowTopicList();
+        model.addAttribute("topicList", topicList);
+        return "topic/topic";
+    }
 
     @GetMapping(value = "/projets/{id}/topics")
     public String getAllTopicsOfProject(@PathVariable("id") String id, Model model) {

@@ -44,14 +44,12 @@
             <!-- Titre -->
             <thead>
             <tr>
-                <th hidden="true">Id</th>
                 <th><span th:text="#{login.login}"/></th>
                 <th><span th:text="#{right.read}"/></th>
                 <th><span th:text="#{right.write}"/></th>
             </tr>
 
             <tr>
-                <th hidden="true"></th>
                 <th>
                     <div class="row">
                         <div class="input-field col s12">
@@ -114,7 +112,7 @@
     $("#search").keyup(function (event) {
         var value = $(this).val().toLowerCase();
         $("#usersTable tr").filter(function () {
-            $(this).toggle(this.getElementsByTagName("td")[1].innerHTML.toLowerCase().indexOf(value) > -1);
+            $(this).toggle(this.getElementsByTagName("td")[0].innerHTML.toLowerCase().indexOf(value) > -1);
         });
 
 
