@@ -1,8 +1,12 @@
 package com.miage.m2.webappforum.control;
 
+import com.miage.m2.webappforum.entity.Role;
 import com.miage.m2.webappforum.entity.Utilisateur;
+import com.miage.m2.webappforum.repository.RoleRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.Valid;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,9 @@ public class RegisterController {
 
   @Autowired
   UtilisateurRepository ur;
+
+  @Autowired
+  RoleRepository rr;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -49,10 +56,13 @@ public class RegisterController {
       return "login/register";
     } else {
       user.setInscription(new Date());
-//      String md5Hex = DigestUtils.md5Hex(user.getPassword()).toUpperCase();
-//      user.setPassword(md5Hex);
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       ur.save(user);
+
+      Role role = rr.getRoleByName("USER");
+      role.getUtilisateurs().add(user);
+      rr.save(role);
+
       return "redirect:/login";
     }
   }

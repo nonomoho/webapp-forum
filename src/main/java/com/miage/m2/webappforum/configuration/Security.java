@@ -1,9 +1,7 @@
 package com.miage.m2.webappforum.configuration;
 
 import javax.sql.DataSource;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -28,11 +26,12 @@ public class Security extends WebSecurityConfigurerAdapter {
     auth.inMemoryAuthentication()
         .withUser("user").password("password")
         .roles("USER").and().withUser("admin").password("admin").roles("ADMIN");
+
     auth.jdbcAuthentication()
         .dataSource(dataSource)
         .passwordEncoder(passwordEncoder)
         .usersByUsernameQuery("SELECT pseudo, password, 1 FROM utilisateur WHERE pseudo=?")
-        .authoritiesByUsernameQuery("select pseudo, 'USER' from utilisateur where pseudo=?");
+        .authoritiesByUsernameQuery("select u.pseudo, r.name from utilisateur u join role_utilisateurs ru on u.id = utilisateurs_id join role r on ru.roles_id = r.id where pseudo = ?");
 
   }
 

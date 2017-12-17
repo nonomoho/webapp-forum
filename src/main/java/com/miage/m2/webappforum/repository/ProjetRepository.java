@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ProjetRepository extends CrudRepository<Projet, String> {
 
-    Boolean existsByNom(String nom);
+  Boolean existsByNom(String nom);
 
 }
