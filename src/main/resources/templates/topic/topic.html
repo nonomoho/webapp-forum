@@ -14,8 +14,7 @@
         <tr>
             <th><span th:text="#{topic.name}"></span></th>
             <th><span th:text="#{topic.bool}"></span></th>
-            <th><span th:text="#{topic.user}"></span></th>
-            <th><span th:text="#{topic.date}"></span></th>
+            <th><span th:text="#{topic.lastPost}"></span></th>
             <th><span th:text="#{topic.follow}"></span></th>
         </tr>
         </thead>
@@ -29,9 +28,7 @@
                 <p th:text="${topic?.ouvert}"/>
             </td>
             <td>
-                <p th:text="${topic?.createur}"/>
-            </td>
-            <td>
+                <span th:text="#{topic.by}"></span><p th:text="${topic?.createur}"/>
                 <p th:text="${topic?.creation}"/>
             </td>
             <td>
