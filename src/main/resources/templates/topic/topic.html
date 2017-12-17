@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main">
+<head>
+    <title>Topics</title>
+</head>
+
+
+<section layout:fragment="mainContent">
+
+    <table class="striped">
+        <thead>
+        <tr>
+            <th><span th:text="#{topic.name}"></span></th>
+            <th><span th:text="#{topic.bool}"></span></th>
+            <th><span th:text="#{topic.user}"></span></th>
+            <th><span th:text="#{topic.date}"></span></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="topic : ${topicList}">
+            <td>
+                <p th:text="${topic?.nom}"/>
+            </td>
+            <td>
+                <p th:text="${topic?.ouvert}"/>
+            </td>
+            <td>
+                <p th:text="${topic?.createur}"/>
+            </td>
+            <td>
+                <p th:text="${topic?.creation}"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
+</html>
