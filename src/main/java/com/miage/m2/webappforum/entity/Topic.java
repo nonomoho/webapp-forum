@@ -4,7 +4,6 @@ package com.miage.m2.webappforum.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.rmi.CORBA.Util;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;

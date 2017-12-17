@@ -20,8 +20,6 @@ public class RegisterController {
 
     @Autowired
     UtilisateurRepository ur;
-    @Autowired
-    TopicController l;
 
     @GetMapping(value = "/register")
     public String askAddUser(Model model) {
