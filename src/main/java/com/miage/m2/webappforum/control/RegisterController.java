@@ -20,6 +20,8 @@ public class RegisterController {
 
     @Autowired
     UtilisateurRepository ur;
+    @Autowired
+    TopicController l;
 
     @GetMapping(value = "/register")
     public String askAddUser(Model model) {
@@ -34,10 +36,10 @@ public class RegisterController {
         if (!confirm.equals(user.getPassword())) {
             result.rejectValue("password", "notSamePassword");
         }
-        if (ur.existsByPseudo(user.getPseudo())){
+        if (ur.existsByPseudo(user.getPseudo())) {
             result.rejectValue("pseudo", "register.userNameAlreadyExist");
         }
-        if (ur.existsByEmail(user.getEmail())){
+        if (ur.existsByEmail(user.getEmail())) {
             result.rejectValue("email", "register.mailAlreadyExist");
         }
         if (result.hasErrors()) {

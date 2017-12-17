@@ -15,7 +15,8 @@
             <th><span th:text="#{topic.name}"></span></th>
             <th><span th:text="#{topic.bool}"></span></th>
             <th><span th:text="#{topic.user}"></span></th>
-            <th><span th:text="#{topic.date}"></span></th>
+            <th><span th:text="#{tgstopic.date}"></span></th>
+            <th><span th:text="#{topic.follow}"></span></th>
         </tr>
         </thead>
 
@@ -32,6 +33,9 @@
             </td>
             <td>
                 <p th:text="${topic?.creation}"/>
+            </td>
+            <td>
+                <i th:onclick="${@followService.addTopicFollowing(topic?.id)}" class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"/>
             </td>
         </tr>
         </tbody>

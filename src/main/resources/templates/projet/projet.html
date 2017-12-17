@@ -20,7 +20,7 @@
         <tbody>
         <tr th:each="projet : ${projets}">
             <td>
-                <h5 th:text="${projet?.nom}"/>
+                <a th:href="@{'/projets/'+ ${projet.id}+'/topics'}"><h5 th:text="${projet?.nom}"/></a>
                 <p th:text="${projet?.description}"/>
             </td>
             <td>

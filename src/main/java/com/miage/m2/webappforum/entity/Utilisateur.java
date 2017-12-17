@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email", "pseudo"}))
@@ -22,6 +23,8 @@ public class Utilisateur {
     private String email;
     @NotEmpty(message = "{emptyField}")
     private String password;
+    @ManyToMany
+    private Set<Topic> followTopicList;
     private Date inscription;
 
     public Utilisateur() {
@@ -65,5 +68,13 @@ public class Utilisateur {
 
     public void setInscription(Date inscription) {
         this.inscription = inscription;
+    }
+
+    public Set<Topic> getFollowTopicList() {
+        return followTopicList;
+    }
+
+    public void setFollowTopicList(Set<Topic> followTopicList) {
+        this.followTopicList = followTopicList;
     }
 }
