@@ -40,62 +40,8 @@
 
 
         <!-- DROITS DES UTILISATEURS -->
-        <table class="striped">
-            <!-- Titre -->
-            <thead>
-            <tr>
-                <th><span th:text="#{login.login}"/></th>
-                <th><span th:text="#{right.read}"/></th>
-                <th><span th:text="#{right.write}"/></th>
-            </tr>
+        <div th:replace="layout/rights :: rights"></div>
 
-            <tr>
-                <th>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">search</i>
-                            <input id="search" type="text" class="search" th:placeholder="#{search}"/>
-                        </div>
-                    </div>
-                </th>
-                <th>
-                    <p>
-                        <input type="checkbox" class="filled-in" th:id="read-all"
-                               onclick="checkAll(this, 'read-right')"/>
-                        <label th:for="read-all"><span th:text="#{everybody}"/></label>
-                    </p>
-                </th>
-                <th>
-                    <p>
-                        <input type="checkbox" class="filled-in" th:id="write-all"
-                               onclick="checkAll(this, 'write-right')"/>
-                        <label th:for="write-all"><span th:text="#{everybody}"/></label>
-                    </p>
-                </th>
-            </tr>
-            </thead>
-
-            <!-- All users -->
-            <tbody id="usersTable">
-            <tr th:each="user : ${users}">
-                <td id="userPseudo" th:text="${user.pseudo}"/>
-                <td>
-                    <p>
-                        <input type="checkbox" class="filled-in read-right" th:id="${'read-' + user.id}"
-                               th:field="*{readUsers}" th:value="${user.id}"/>
-                        <label th:for="${'read-' + user.id}"/>
-                    </p>
-                </td>
-                <td>
-                    <p>
-                        <input type="checkbox" class="filled-in write-right" th:id="${'write-' + user.id}"
-                               th:field="*{writeUsers}" th:value="${user.id}"/>
-                        <label th:for="${'write-' + user.id}"/>
-                    </p>
-                </td>
-            </tr>
-            </tbody>
-        </table>
 
         <!-- SUBMIT -->
         <button class="btn waves-effect waves-light" type="submit" name="action">
@@ -106,36 +52,7 @@
     </form>
 </section>
 
-<script layout:fragment="script">
-
-    //filter table rows with search input value
-    $("#search").keyup(function (event) {
-        var value = $(this).val().toLowerCase();
-        $("#usersTable tr").filter(function () {
-            $(this).toggle(this.getElementsByTagName("td")[0].innerHTML.toLowerCase().indexOf(value) > -1);
-        });
-
-
-    });
-
-    //prevent form from being submitted when press enter in search field
-    $("#search").keydown(function (event) {
-        if (event.which == 13) {
-            event.preventDefault();
-        }
-    });
-
-    //check or uncheck all read or write checkbox
-    function checkAll(element, type) {
-        $("." + type).prop('checked', element.checked);
-    }
-
-    //remove hidden fields that prevent checkbox from showing
-    $(document).ready(function() {
-        $('input[name=_readUsers]').remove();
-        $('input[name=_writeUsers]').remove();
-    });
-
+<script layout:fragment="script" th:replace="layout/rights :: rights_js">
 </script>
 
 
