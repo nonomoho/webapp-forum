@@ -2,6 +2,7 @@ package com.miage.m2.webappforum.configuration;
 
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class Security extends WebSecurityConfigurerAdapter {
 
+  @Qualifier("dataSource")
   @Autowired
   DataSource dataSource;
 
