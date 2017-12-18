@@ -28,11 +28,13 @@
                 <p th:text="${topic?.ouvert}"/>
             </td>
             <td>
-                <span th:text="#{topic.by}"></span><p th:text="${topic?.createur}"/>
+                <span th:text="#{topic.by}"></span><p th:text="${topic?.createur?.pseudo}"/>
                 <p th:text="${topic?.creation}"/>
             </td>
             <td>
-                <i th:onclick="${@followService.addTopicFollowing(topic?.id)}" class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"/>
+                <a class="btn-floating btn-large yellow" th:onclick="${@followService.addTopicFollowing()}">
+                    <i class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
+                </a>
             </td>
         </tr>
         </tbody>

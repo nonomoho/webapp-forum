@@ -30,9 +30,6 @@ public class Utilisateur {
   @ManyToMany
   private Set<Topic> followTopicList;
   private Date inscription;
-  @ManyToMany(mappedBy = "utilisateurs")
-  private Set<Role> roles;
-
 
   public Utilisateur() {
   }
@@ -83,13 +80,5 @@ public class Utilisateur {
 
   public void setFollowTopicList(Set<Topic> followTopicList) {
     this.followTopicList = followTopicList;
-  }
-
-  public Set<Role> getRoles() {
-    return roles;
-  }
-
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
   }
 }
