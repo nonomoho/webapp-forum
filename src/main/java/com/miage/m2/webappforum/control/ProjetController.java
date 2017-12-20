@@ -4,8 +4,12 @@ import com.miage.m2.webappforum.entity.Projet;
 import com.miage.m2.webappforum.repository.ProjetRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.UserService;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ProjetController {
@@ -40,8 +46,12 @@ public class ProjetController {
 
   @PostMapping(value = "/projets/save")
   public String addProject(Model model, @ModelAttribute("project") @Valid Projet project,
-      BindingResult result) {
+      BindingResult result,
+      @RequestParam("readUsers") List<String> readUsers,
+      @RequestParam("readUsers") List<String> writeUsers) {
     project.setNom(project.getNom().trim().toUpperCase());
+    project.setReadUsers(new HashSet<>((Collection)ur.findAll(readUsers)));
+    project.setWriteUsers(new HashSet<>((Collection)ur.findAll(writeUsers)));
     if (project.getId().isEmpty() && pr.existsByNom(project.getNom())) {
       result.rejectValue("nom", "project.nameAlreadyExist");
     }
@@ -54,6 +64,7 @@ public class ProjetController {
     }
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping(value = "/projets/edit/{idProjet}")
   public String editProjetForm(Model model, @PathVariable("idProjet") String idProjet) {
     model.addAttribute("users", ur.findAll());
