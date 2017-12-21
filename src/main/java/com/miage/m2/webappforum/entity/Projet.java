@@ -1,11 +1,17 @@
 package com.miage.m2.webappforum.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"nom"}))
@@ -21,10 +27,12 @@ public class Projet {
   private String description;
   @OneToMany
   private List<Topic> topicList;
-  @ManyToMany
-  private Set<Utilisateur> readUsers;
-  @ManyToMany
-  private Set<Utilisateur> writeUsers;
+  @Transient
+  @ElementCollection
+  private Set<String> readUsers;
+  @Transient
+  @ElementCollection
+  private Set<String> writeUsers;
 
   public Projet() {
   }
@@ -61,19 +69,19 @@ public class Projet {
     this.topicList = topicList;
   }
 
-  public Set<Utilisateur> getReadUsers() {
+  public Set<String> getReadUsers() {
     return readUsers;
   }
 
-  public void setReadUsers(Set<Utilisateur> readUsers) {
+  public void setReadUsers(Set<String> readUsers) {
     this.readUsers = readUsers;
   }
 
-  public Set<Utilisateur> getWriteUsers() {
+  public Set<String> getWriteUsers() {
     return writeUsers;
   }
 
-  public void setWriteUsers(Set<Utilisateur> writeUsers) {
+  public void setWriteUsers(Set<String> writeUsers) {
     this.writeUsers = writeUsers;
   }
 }
