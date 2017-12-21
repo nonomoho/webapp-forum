@@ -3,6 +3,7 @@ package com.miage.m2.webappforum.entity;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
@@ -19,7 +20,7 @@ public class Role {
 
   private String name;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable
   private Set<Utilisateur> utilisateurs;
 

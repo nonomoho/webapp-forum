@@ -3,6 +3,7 @@ package com.miage.m2.webappforum.entity;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -27,10 +28,10 @@ public class Utilisateur {
   private String email;
   @NotEmpty(message = "{emptyField}")
   private String password;
-  @ManyToMany
+  @ManyToMany()
   private Set<Topic> followTopicList;
   private Date inscription;
-  @ManyToMany(mappedBy = "utilisateurs")
+  @ManyToMany(mappedBy = "utilisateurs", fetch = FetchType.EAGER)
   private Set<Role> roles;
 
   public Utilisateur() {

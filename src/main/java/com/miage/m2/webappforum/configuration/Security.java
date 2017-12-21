@@ -1,9 +1,15 @@
 package com.miage.m2.webappforum.configuration;
 
+import com.miage.m2.webappforum.entity.Role;
+import com.miage.m2.webappforum.entity.Utilisateur;
+import com.miage.m2.webappforum.repository.RoleRepository;
+import com.miage.m2.webappforum.repository.UtilisateurRepository;
+import java.util.Date;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,10 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 @Configuration
 @EnableWebSecurity
@@ -58,6 +60,27 @@ public class Security extends WebSecurityConfigurerAdapter {
         .logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
         .and()
         .csrf();
+  }
+
+  @Bean
+  public PrincipalExtractor principalExtractor(UtilisateurRepository utilisateurRepository, RoleRepository roleRepository) {
+    return map -> {
+      Utilisateur user = utilisateurRepository.findFirstByPseudo((String) map.get("name"));
+      if (user == null) {
+        user = new Utilisateur();
+        user.setId((String) map.get("id"));
+        user.setEmail((String) map.get("email"));
+        user.setPseudo((String) map.get("name"));
+        user.setPassword("google");
+        user.setInscription(new Date());
+        utilisateurRepository.save(user);
+
+        Role role = roleRepository.getRoleByName("USER");
+        role.getUtilisateurs().add(user);
+        roleRepository.save(role);
+      }
+      return user;
+    };
   }
 
   @Bean
