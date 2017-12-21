@@ -12,68 +12,68 @@ import java.util.Set;
 
 public class Projet {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
-    @NotEmpty(message = "{emptyField}")
-    private String nom;
-    private String description;
-    @OneToMany
-    private List<Topic> topicList;
-    @ElementCollection
-    private Set<String> readUsers;
-    @ElementCollection
-    private Set<String> writeUsers;
+  @Id
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  private String id;
+  @NotEmpty(message = "{emptyField}")
+  private String nom;
+  private String description;
+  @OneToMany
+  private List<Topic> topicList;
+  @ManyToMany
+  private Set<Utilisateur> readUsers;
+  @ManyToMany
+  private Set<Utilisateur> writeUsers;
 
-    public Projet() {
-    }
+  public Projet() {
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public String getNom() {
-        return nom;
-    }
+  public String getNom() {
+    return nom;
+  }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+  public void setNom(String nom) {
+    this.nom = nom;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public List<Topic> getTopicList() {
-        return topicList;
-    }
+  public List<Topic> getTopicList() {
+    return topicList;
+  }
 
-    public void setTopicList(List<Topic> topicList) {
-        this.topicList = topicList;
-    }
+  public void setTopicList(List<Topic> topicList) {
+    this.topicList = topicList;
+  }
 
-    public Set<String> getReadUsers() {
-        return readUsers;
-    }
+  public Set<Utilisateur> getReadUsers() {
+    return readUsers;
+  }
 
-    public void setReadUsers(Set<String> readUsers) {
-        this.readUsers = readUsers;
-    }
+  public void setReadUsers(Set<Utilisateur> readUsers) {
+    this.readUsers = readUsers;
+  }
 
-    public Set<String> getWriteUsers() {
-        return writeUsers;
-    }
+  public Set<Utilisateur> getWriteUsers() {
+    return writeUsers;
+  }
 
-    public void setWriteUsers(Set<String> writeUsers) {
-        this.writeUsers = writeUsers;
-    }
+  public void setWriteUsers(Set<Utilisateur> writeUsers) {
+    this.writeUsers = writeUsers;
+  }
 }

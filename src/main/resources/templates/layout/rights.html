@@ -50,14 +50,14 @@
             <td>
                 <p>
                     <input type="checkbox" class="filled-in read-right" th:id="${'read-' + user.id}"
-                           th:field="*{readUsers}" th:value="${user.id}"/>
+                           th:name="readUsers" th:value="${user.id}"/>
                     <label th:for="${'read-' + user.id}"/>
                 </p>
             </td>
             <td>
                 <p>
                     <input type="checkbox" class="filled-in write-right" th:id="${'write-' + user.id}"
-                           th:field="*{writeUsers}" th:value="${user.id}"/>
+                           th:name="writeUsers" th:value="${user.id}"/>
                     <label th:for="${'write-' + user.id}"/>
                 </p>
             </td>

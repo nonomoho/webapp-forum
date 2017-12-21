@@ -28,11 +28,18 @@
                 <p th:text="${topic?.ouvert}"/>
             </td>
             <td>
-                <span th:text="#{topic.by}"></span><p th:text="${topic?.createur}"/>
+                <span th:text="#{topic.by}"></span><p th:text="${topic?.createur?.pseudo}"/>
                 <p th:text="${topic?.creation}"/>
             </td>
             <td>
-                <i th:onclick="${@followService.addTopicFollowing(topic?.id)}" class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"/>
+              <form class="col s12" action="#" th:action="@{'/topics/'+ ${topic.id}+'/follow'}" th:method="post">
+                <button class="btn-floating btn-large yellow" type="submit" name="action">
+                  <i class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
+                </button>
+              </form>
+               <!-- <a class="btn-floating btn-large yellow" th:onclick="${@followService.addTopicFollowing(topic.id)}">
+                    <i class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
+                </a>-->
             </td>
         </tr>
         </tbody>

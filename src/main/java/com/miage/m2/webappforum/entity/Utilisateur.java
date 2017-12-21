@@ -33,7 +33,6 @@ public class Utilisateur {
   @ManyToMany(mappedBy = "utilisateurs")
   private Set<Role> roles;
 
-
   public Utilisateur() {
   }
 

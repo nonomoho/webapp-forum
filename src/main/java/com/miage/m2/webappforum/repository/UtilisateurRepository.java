@@ -11,4 +11,6 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Strin
 
   Boolean existsByEmail(String email);
 
+  Utilisateur findFirstByPseudo(String pseudo);
+
 }
