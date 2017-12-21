@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:text-align="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/main">
 <head>
-    <title>Login</title>
+  <title>Login</title>
 </head>
 
 <section layout:fragment="mainContent">
 
-    <div th:if="${(param.error != null)}" class="row">
-        <div class="col s12">
-            <div class="card-panel red darken-1 center-align">
-                <span class="white-text">Invalid username and password.</span>
-            </div>
-        </div>
+  <div th:if="${(param.error != null)}" class="row">
+    <div class="col s12">
+      <div class="card-panel red darken-1 center-align">
+        <span class="white-text">Invalid username and password.</span>
+      </div>
+    </div>
+  </div>
+
+  <div th:if="${(param.logout != null)}" class="row">
+    <div class="col s12">
+      <div class="card-panel green center-align">
+        <span class="white-text">Successfull logout</span>
+      </div>
+    </div>
+  </div>
+
+  <form name="loginForm" class="col s12" action="#" th:action="@{/login}" method="post">
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="username" name="username" type="text" class="validate"/>
+        <label class="active" for="username"><span th:text="#{login.login}"></span></label>
+      </div>
     </div>
 
-    <div th:if="${(param.logout != null)}" class="row">
-        <div class="col s12">
-            <div class="card-panel green darken-1 center-align">
-                <span class="white-text">Successfull logout</span>
-            </div>
-        </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="password" name="password" type="password" class="validate"/>
+        <label for="password"><span th:text="#{login.password}"></span></label>
+      </div>
     </div>
 
-    <form name="loginForm" class="col s12" action="#" th:action="@{/login}" method="post">
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="username" name="username" type="text" class="validate"/>
-                <label class="active" for="username"><span th:text="#{login.login}"></span></label>
-            </div>
-        </div>
+    <button class="btn waves-effect waves-light amber" type="submit" name="action">
+      <span th:text="#{send}"></span>
+      <i class="material-icons right">send</i>
+    </button>
 
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="password" name="password" type="password" class="validate"/>
-                <label for="password"><span th:text="#{login.password}"></span></label>
-            </div>
-        </div>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  </form>
 
-        <button class="btn waves-effect waves-light" type="submit" name="action">
-            <span th:text="#{send}"></span>
-            <i class="material-icons right">send</i>
-        </button>
-
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    </form>
+  <br/>
+  <div class="row">
+    <a th:href="@{/login/google}" class="waves-effect waves-light btn-large social google">
+      <i class="fa fa-google"></i>
+      <span th:text="#{login.google}"></span>
+    </a>
+  </div>
 
 </section>
 

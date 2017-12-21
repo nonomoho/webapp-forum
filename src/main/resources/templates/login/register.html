@@ -14,7 +14,7 @@
         <!-- PSEUDO -->
         <div class="row">
             <div th:if="${#fields.hasErrors('pseudo')}">
-                <div class="col s12 card-panel red darken-1 center-align">
+                <div class="col s8 offset-s2 card-panel red darken-1 center-align white-text">
                     <span th:errors="*{pseudo}"/>
                 </div>
             </div>
@@ -28,7 +28,7 @@
         <!-- MAIL -->
         <div class="row">
             <div th:if="${#fields.hasErrors('email')}">
-                <div class="col s12 card-panel red darken-1 center-align">
+                <div class="col s8 offset-s2 card-panel red darken-1 center-align white-text">
                     <span th:errors="*{email}"/>
                 </div>
             </div>
@@ -42,7 +42,7 @@
         <!-- PASSWORD -->
         <div class="row">
             <div th:if="${#fields.hasErrors('password')}">
-                <div class="col s12 card-panel red darken-1 center-align">
+                <div class="col s8 offset-s2 card-panel red darken-1 center-align white-text">
                     <span th:errors="*{password}"/>
                 </div>
             </div>
@@ -60,7 +60,7 @@
         </div>
 
         <!-- SUBMIT -->
-        <button class="btn waves-effect waves-light" type="submit" name="action">
+        <button class="btn waves-effect waves-light amber" type="submit" name="action">
             <span th:text="#{send}"></span>
             <i class="material-icons right">send</i>
         </button>

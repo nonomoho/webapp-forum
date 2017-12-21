@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/css/flag-icon.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/materialize-social@1.0.3/materialize-social.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
-<body>
+<body class="grey lighten-5">
 
 <!-- navbar -->
 <div>
@@ -26,9 +28,9 @@
         </a></li>
     </ul>
 
-    <nav class="teal">
+    <nav class="amber">
         <div class="nav-wrapper">
-            <a th:href="@{/}" class="brand-logo">Forum</a>
+            <a th:href="@{/}" class="brand-logo" style="padding-left: 15px">Forum</a>
             <ul class="right hide-on-med-and-down">
                 <li sec:authorize="isAuthenticated()"><span th:text="#{hello} + ' '"/><span sec:authentication="name"/>
                 </li>
