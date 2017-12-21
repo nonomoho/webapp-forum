@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,11 +46,11 @@ public class ProjetController {
   @PostMapping(value = "/projets/save")
   public String addProject(Model model, @ModelAttribute("project") @Valid Projet project,
       BindingResult result,
-      @RequestParam("readUsers") List<String> readUsers,
-      @RequestParam("readUsers") List<String> writeUsers) {
+      @RequestParam(name = "readUsers", required = false) List<String> readUsers,
+      @RequestParam(name = "readUsers", required = false) List<String> writeUsers) {
     project.setNom(project.getNom().trim().toUpperCase());
-    project.setReadUsers(new HashSet<>((Collection)ur.findAll(readUsers)));
-    project.setWriteUsers(new HashSet<>((Collection)ur.findAll(writeUsers)));
+    project.setReadUsers(new HashSet<>((Collection) ur.findAll(readUsers)));
+    project.setWriteUsers(new HashSet<>((Collection) ur.findAll(writeUsers)));
     if (project.getId().isEmpty() && pr.existsByNom(project.getNom())) {
       result.rejectValue("nom", "project.nameAlreadyExist");
     }
@@ -64,7 +63,7 @@ public class ProjetController {
     }
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  //@PreAuthorize("hasPermission(#idProjet, 'Projet', 'READ')")
   @GetMapping(value = "/projets/edit/{idProjet}")
   public String editProjetForm(Model model, @PathVariable("idProjet") String idProjet) {
     model.addAttribute("users", ur.findAll());
