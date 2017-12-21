@@ -40,6 +40,9 @@
       </p>
     </div>
 
+    <!-- DROITS DES UTILISATEURS -->
+    <div th:replace="layout/rights :: rights"></div>
+
     <!-- SUBMIT -->
     <button class="btn waves-effect waves-light" type="submit" name="action">
       <span th:text="*{id} != null ? #{edit} : #{add}"></span>
@@ -49,7 +52,7 @@
   </form>
 </section>
 
-<script layout:fragment="script">
+<script layout:fragment="script" th:replace="layout/rights :: rights_js">
   //remove hidden fields that prevent checkbox from showing
   $(document).ready(function () {
     $('input[name=_ouvert]').remove();

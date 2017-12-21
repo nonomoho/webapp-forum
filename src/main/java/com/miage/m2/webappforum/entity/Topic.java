@@ -11,86 +11,109 @@ import java.util.Set;
 @Entity
 public class Topic {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
-    private String nom;
-    private Boolean ouvert;
-    @ManyToOne
-    private Utilisateur createur;
-    private Date creation;
-    @OneToMany
-    private List<Message> messageList;
-    @ManyToMany (mappedBy = "followTopicList")
-    private Set<Utilisateur> followerList;
-    @Transient
-    private boolean followedByUser;
+  @Id
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  private String id;
+  private String nom;
+  private Boolean ouvert;
+  @ManyToOne
+  private Utilisateur createur;
+  private Date creation;
+  @OneToMany
+  private List<Message> messageList;
+  @ManyToMany(mappedBy = "followTopicList")
+  private Set<Utilisateur> followerList;
+  @Transient
+  private boolean followedByUser;
 
-    public Topic() {
-    }
+  @Transient
+  @ElementCollection
+  private Set<String> readUsers;
+  @Transient
+  @ElementCollection
+  private Set<String> writeUsers;
 
-    public String getId() {
-        return id;
-    }
+  public Topic() {
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public Set<String> getReadUsers() {
+    return readUsers;
+  }
 
-    public String getNom() {
-        return nom;
-    }
+  public void setReadUsers(Set<String> readUsers) {
+    this.readUsers = readUsers;
+  }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+  public Set<String> getWriteUsers() {
+    return writeUsers;
+  }
 
-    public Boolean getOuvert() {
-        return ouvert;
-    }
+  public void setWriteUsers(Set<String> writeUsers) {
+    this.writeUsers = writeUsers;
+  }
 
-    public void setOuvert(Boolean ouvert) {
-        this.ouvert = ouvert;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public Utilisateur getCreateur() {
-        return createur;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public void setCreateur(Utilisateur createur) {
-        this.createur = createur;
-    }
+  public String getNom() {
+    return nom;
+  }
 
-    public Date getCreation() {
-        return creation;
-    }
+  public void setNom(String nom) {
+    this.nom = nom;
+  }
 
-    public void setCreation(Date creation) {
-        this.creation = creation;
-    }
+  public Boolean getOuvert() {
+    return ouvert;
+  }
 
-    public List<Message> getMessageList() {
-        return messageList;
-    }
+  public void setOuvert(Boolean ouvert) {
+    this.ouvert = ouvert;
+  }
 
-    public void setMessageList(List<Message> messageList) {
-        this.messageList = messageList;
-    }
+  public Utilisateur getCreateur() {
+    return createur;
+  }
 
-    public Set<Utilisateur> getFollowerList() {
-        return followerList;
-    }
+  public void setCreateur(Utilisateur createur) {
+    this.createur = createur;
+  }
 
-    public void setFollowerList(Set<Utilisateur> followerList) {
-        this.followerList = followerList;
-    }
+  public Date getCreation() {
+    return creation;
+  }
 
-    public boolean isFollowedByUser() {
-        return followedByUser;
-    }
+  public void setCreation(Date creation) {
+    this.creation = creation;
+  }
 
-    public void setFollowedByUser(boolean followedByUser) {
-        this.followedByUser = followedByUser;
-    }
+  public List<Message> getMessageList() {
+    return messageList;
+  }
+
+  public void setMessageList(List<Message> messageList) {
+    this.messageList = messageList;
+  }
+
+  public Set<Utilisateur> getFollowerList() {
+    return followerList;
+  }
+
+  public void setFollowerList(Set<Utilisateur> followerList) {
+    this.followerList = followerList;
+  }
+
+  public boolean isFollowedByUser() {
+    return followedByUser;
+  }
+
+  public void setFollowedByUser(boolean followedByUser) {
+    this.followedByUser = followedByUser;
+  }
 }

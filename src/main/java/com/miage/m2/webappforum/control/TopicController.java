@@ -64,21 +64,24 @@ public class TopicController {
   public String addTopicFollowing(@PathVariable("idTopic") String topicId) {
     Topic topic = tr.findOne(topicId);
     Utilisateur utilisateur = us.getLoggedUser();
-    if (utilisateur.getFollowTopicList().contains(topic)) {
-      utilisateur.getFollowTopicList().remove(topic);
-    } else {
-      utilisateur.getFollowTopicList().add(topic);
+    if (utilisateur != null) {
+      if (utilisateur.getFollowTopicList().contains(topic)) {
+        utilisateur.getFollowTopicList().remove(topic);
+      } else {
+        utilisateur.getFollowTopicList().add(topic);
+      }
+      ur.save(utilisateur);
     }
-    ur.save(utilisateur);
     return "redirect:/followedTopics";
-
   }
 
   @GetMapping(value = "/projets/{id}/topics/add")
   public String addTopicForm(@PathVariable("id") String id, Model model) {
+    model.addAttribute("users", ur.findAll());
     model.addAttribute("topic", new Topic());
     Projet projet = pr.findOne(id);
     model.addAttribute("projet", projet);
+    System.out.println(projet);
     return "topic/singleTopic";
 
   }
@@ -92,12 +95,14 @@ public class TopicController {
       result.rejectValue("nom", "topic.nameAlreadyExist");
     }
     if (result.hasErrors()) {
+      model.addAttribute("users", ur.findAll());
       model.addAttribute("topic", topic);
+      model.addAttribute("projet",projet);
       return "topic/singleTopic";
     } else {
-      tr.save(topic);
+      Topic topicSaved = tr.save(topic);
       List<Topic> listeTopic = projet.getTopicList();
-      listeTopic.add(topic);
+      listeTopic.add(topicSaved);
       pr.save(projet);
       return "redirect:/projets/{id}/topics";
     }
