@@ -12,9 +12,16 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+
+import javax.validation.Valid;
+import java.util.List;
+
 
 @Controller
 public class TopicController {
@@ -23,6 +30,7 @@ public class TopicController {
   TopicRepository tr;
   @Autowired
   ProjetRepository pr;
+
   @Autowired
   UtilisateurRepository ur;
 
@@ -39,15 +47,18 @@ public class TopicController {
     return "topic/topic";
   }
 
+
+
   @GetMapping(value = "/projets/{id}/topics")
   public String getAllTopicsOfProject(@PathVariable("id") String id, Model model) {
-    Utilisateur utilisateur = us.getLoggedUser();
+      Utilisateur utilisateur = us.getLoggedUser();
     Projet projet = pr.findOne(id);
     List<Topic> topicList = projet.getTopicList();
     topicList.forEach(t -> t.setFollowedByUser(t.getFollowerList().contains(utilisateur)));
     model.addAttribute("topicList", topicList);
     return "topic/topic";
   }
+
 
   @PostMapping(value = "/topics/{idTopic}/follow")
   public String addTopicFollowing(@PathVariable("idTopic") String topicId) {
@@ -60,7 +71,43 @@ public class TopicController {
     }
     ur.save(utilisateur);
     return "redirect:/followedTopics";
+
   }
 
+  @GetMapping(value = "/projets/{id}/topics/add")
+  public String addTopicForm(@PathVariable("id") String id, Model model) {
+    model.addAttribute("topic", new Topic());
+    Projet projet = pr.findOne(id);
+    model.addAttribute("projet", projet);
+    return "topic/singleTopic";
+
+  }
+
+  @PostMapping(value = "projets/{id}/topics/save")
+  public String addTopic(Model model, @PathVariable("id") String id,@ModelAttribute("topic") @Valid Topic topic,
+      BindingResult result) {
+    Projet projet = pr.findOne(id);
+    topic.setNom(topic.getNom().trim().toUpperCase());
+    if (topic.getId().isEmpty() && pr.existsByNom(topic.getNom())) {
+      result.rejectValue("nom", "topic.nameAlreadyExist");
+    }
+    if (result.hasErrors()) {
+      model.addAttribute("topic", topic);
+      return "topic/singleTopic";
+    } else {
+      tr.save(topic);
+      List<Topic> listeTopic = projet.getTopicList();
+      listeTopic.add(topic);
+      pr.save(projet);
+      return "redirect:/projets/{id}/topics";
+    }
+
+  }
+
+  @GetMapping(value = "/projets/edit/{idTopic}")
+  public String editTopicForm(Model model, @PathVariable("idTopic") String idTopic) {
+    model.addAttribute("project", pr.findOne(idTopic));
+    return "topic/singleTopic";
+  }
 
 }
