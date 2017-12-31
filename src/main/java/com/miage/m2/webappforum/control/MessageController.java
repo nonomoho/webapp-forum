@@ -67,24 +67,14 @@ public class MessageController {
 
 
   @PostMapping(value = "projets/{id}/topics/{idTopic}/messages/save")
-  public String addMessage(Model model, @PathVariable("id") String id,@PathVariable("idTopic") String idTopic,@ModelAttribute("message") @Valid Message message,
-      BindingResult result) {
-    System.out.println("helloo ca mere");
-    Projet projet = pr.findOne(id);
+  public String addMessage(@PathVariable("idTopic") String idTopic,@ModelAttribute("message") @Valid Message message) {
     Topic topic = tr.findOne(idTopic);
     message.setContenu(message.getContenu());
-    /*if (result.hasErrors()) {
-      model.addAttribute("message", message);
-      model.addAttribute("topic",topic);
-      model.addAttribute("projet",projet);
-      System.out.println("zzzzzz");
-      return "message/formMessage";
-    }*/
-      Message messageSaved = mr.save(message);
-      List<Message> listeMessage = topic.getMessageList();
-      listeMessage.add(messageSaved);
-      tr.save(topic);
-      return "redirect:/projets/{id}/topics/{idTopic}/messages";
+    Message messageSaved = mr.save(message);
+    List<Message> listeMessage = topic.getMessageList();
+    listeMessage.add(messageSaved);
+    tr.save(topic);
+    return "redirect:/projets/{id}/topics/{idTopic}/messages";
 
 
   }
