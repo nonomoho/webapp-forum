@@ -81,7 +81,6 @@ public class TopicController {
     model.addAttribute("topic", new Topic());
     Projet projet = pr.findOne(id);
     model.addAttribute("projet", projet);
-    System.out.println(projet);
     return "topic/singleTopic";
 
   }
@@ -109,9 +108,12 @@ public class TopicController {
 
   }
 
-  @GetMapping(value = "/projets/edit/{idTopic}")
-  public String editTopicForm(Model model, @PathVariable("idTopic") String idTopic) {
-    model.addAttribute("project", pr.findOne(idTopic));
+  /*    TODO: permission for edit topic    */
+
+  @GetMapping(value = "/projets/{idProjet}/topics/edit/{idTopic}")
+  public String editTopicForm(Model model, @PathVariable("idProjet") String idProjet, @PathVariable("idTopic") String idTopic) {
+    model.addAttribute("projet", pr.findOne(idProjet));
+    model.addAttribute("topic", tr.findOne(idTopic));
     return "topic/singleTopic";
   }
 
