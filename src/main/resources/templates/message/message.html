@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main">
+<head>
+  <title>Message</title>
+</head>
+
+
+<section layout:fragment="mainContent">
+
+  <div th:each="message : ${messageList}">
+  <div class="col s12 m7">
+    <div class="card horizontal">
+      <div class="card-image">
+        <p th:text="${message?.utilisateur}"/>
+        <p th:text="${message?.date}"/>
+      </div>
+      <div class="card-stacked">
+        <div class="card-content">
+          <!--<p th:text="${topic?.nom}"/>-->
+          <p th:text="${message?.contenu}"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</section>
+</html>
