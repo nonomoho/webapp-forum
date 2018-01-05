@@ -9,10 +9,13 @@ import com.miage.m2.webappforum.repository.ProjetRepository;
 import com.miage.m2.webappforum.repository.TopicRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.UserService;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,6 +52,7 @@ public class MessageController {
     Topic topic = tr.findOne(idTopic);
     List<Message> messageList = topic.getMessageList();
     model.addAttribute("messageList", messageList);
+    model.addAttribute("topic",topic);
     return "message/message";
   }
 
@@ -70,6 +74,10 @@ public class MessageController {
   public String addMessage(@PathVariable("idTopic") String idTopic,@ModelAttribute("message") @Valid Message message) {
     Topic topic = tr.findOne(idTopic);
     message.setContenu(message.getContenu());
+    message.setDate(new Date());
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Utilisateur utilisateur = ur.findFirstByPseudo(authentication.getName());
+    message.setUtilisateur(utilisateur);
     Message messageSaved = mr.save(message);
     List<Message> listeMessage = topic.getMessageList();
     listeMessage.add(messageSaved);

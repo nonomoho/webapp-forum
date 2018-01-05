@@ -10,6 +10,8 @@ import com.miage.m2.webappforum.service.UserService;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,6 +58,7 @@ public class TopicController {
     List<Topic> topicList = projet.getTopicList();
     topicList.forEach(t -> t.setFollowedByUser(t.getFollowerList().contains(utilisateur)));
     model.addAttribute("topicList", topicList);
+    model.addAttribute("projet",projet);
     return "topic/topic";
   }
 
@@ -99,6 +102,9 @@ public class TopicController {
       model.addAttribute("projet",projet);
       return "topic/singleTopic";
     } else {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      Utilisateur utilisateur = ur.findFirstByPseudo(authentication.getName());
+      topic.setCreateur(utilisateur);
       Topic topicSaved = tr.save(topic);
       List<Topic> listeTopic = projet.getTopicList();
       listeTopic.add(topicSaved);

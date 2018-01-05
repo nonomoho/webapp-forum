@@ -9,11 +9,13 @@
 
 <section layout:fragment="mainContent">
 
+  <h1 th:text="${topic?.nom}"/>
+
   <div th:each="message : ${messageList}">
   <div class="col s12 m7">
     <div class="card horizontal">
       <div class="card-image">
-        <p th:text="${message?.utilisateur}"/>
+        <p th:text="${message?.utilisateur?.pseudo}"/>
         <p th:text="${message?.date}"/>
       </div>
       <div class="card-stacked">

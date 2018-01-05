@@ -22,7 +22,7 @@
         <tbody>
         <tr th:each="topic : ${topicList}">
             <td>
-                <p th:text="${topic?.nom}"/>
+              <a th:href="@{'/projets/'+ ${projet.id}+'/topics/'+${topic.id}+'/messages'}"><h5 th:text="${topic?.nom}"/></a>
             </td>
             <td>
                 <p th:text="${topic?.ouvert}"/>
