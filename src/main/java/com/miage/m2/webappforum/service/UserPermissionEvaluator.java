@@ -40,7 +40,7 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
   @Override
   public boolean hasPermission(Authentication authentication, Serializable targetId,
       String targetType, Object permission) {
-    TargetPermission target = tpr.findById((String) targetId);
+    TargetPermission target = tpr.findOne((String) targetId);
     return hasPermission(authentication, target, permission);
   }
 

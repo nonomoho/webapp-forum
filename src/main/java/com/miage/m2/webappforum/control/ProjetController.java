@@ -7,6 +7,7 @@ import com.miage.m2.webappforum.entity.TypePermissionEnum;
 import com.miage.m2.webappforum.repository.PermissionRepository;
 import com.miage.m2.webappforum.repository.ProjetRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
+import com.miage.m2.webappforum.service.PermissionService;
 import com.miage.m2.webappforum.service.UserService;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +36,8 @@ public class ProjetController {
 
   @Autowired
   UserService us;
+  @Autowired
+  PermissionService ps;
 
   @GetMapping(value = "/projets")
   public String getAllProjet(Model model) {
@@ -42,6 +45,7 @@ public class ProjetController {
     return "projet/projet";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping(value = "/projets/add")
   public String addProjectForm(Model model) {
     model.addAttribute("users", ur.findAll());
@@ -49,6 +53,7 @@ public class ProjetController {
     return "projet/singleProject";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping(value = "/projets/save")
   public String addProject(Model model, @ModelAttribute("project") @Valid Projet project,
       BindingResult result) {
@@ -63,51 +68,29 @@ public class ProjetController {
       return "projet/singleProject";
     } else {
       Projet saveProjet = pr.save(project);
+      saveProjet.setReadUsers(project.getReadUsers());
+      saveProjet.setWriteUsers(project.getWriteUsers());
 
-      //delete all existing permissions for this project
-      permr.deleteByTargetPermission(saveProjet);
-
-      //create new permission
-      Set<Permission> permissions = new HashSet<>();
-      permissions.addAll(createProjetPermission(project.getReadUsers(), TypePermissionEnum.READ,
-          saveProjet));
-      permissions.addAll(createProjetPermission(project.getWriteUsers(), TypePermissionEnum.WRITE,
-          saveProjet));
-      permr.save(permissions);
+      ps.setPermission(saveProjet);
 
       return "redirect:/projets";
     }
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   //@PreAuthorize("hasPermission(#idProjet, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   @GetMapping(value = "/projets/edit/{idProjet}")
   public String editProjetForm(Model model, @PathVariable("idProjet") String idProjet) {
     model.addAttribute("users", ur.findAll());
     Projet project = pr.findOne(idProjet);
 
-    project.setReadUsers(
-        permr.findAllByTargetPermissionAndType(project, TypePermissionEnum.READ).stream()
-            .map(p -> p.getUtilisateur().getId())
-            .collect(Collectors.toSet()));
-
-    project.setWriteUsers(
-        permr.findAllByTargetPermissionAndType(project, TypePermissionEnum.WRITE).stream()
-            .map(p -> p.getUtilisateur().getId())
-            .collect(Collectors.toSet()));
+    ps.getPermission(project);
 
     model.addAttribute("project", project);
     return "projet/singleProject";
   }
 
 
-  private Set<Permission> createProjetPermission(Set<String> listIdUser,
-      TypePermissionEnum typePermissionEnum, TargetPermission projet) {
-    Set<Permission> permissions = new HashSet<>();
-    if (listIdUser != null) {
-      listIdUser.forEach(ru -> permissions.add(
-          new Permission(typePermissionEnum, ur.findOne(ru), projet)));
-    }
-    return permissions;
-  }
+
 
 }

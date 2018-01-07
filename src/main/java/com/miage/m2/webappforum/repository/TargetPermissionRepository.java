@@ -6,6 +6,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TargetPermissionRepository extends CrudRepository<TargetPermission, String> {
 
-  TargetPermission findById(String id);
-
 }

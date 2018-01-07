@@ -13,6 +13,4 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Strin
 
   Utilisateur findFirstByPseudo(String pseudo);
 
-  Utilisateur findById(String id);
-
 }

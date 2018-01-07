@@ -3,10 +3,13 @@ package com.miage.m2.webappforum.control;
 import com.miage.m2.webappforum.entity.Projet;
 import com.miage.m2.webappforum.entity.Topic;
 import com.miage.m2.webappforum.entity.Utilisateur;
+import com.miage.m2.webappforum.repository.PermissionRepository;
 import com.miage.m2.webappforum.repository.ProjetRepository;
 import com.miage.m2.webappforum.repository.TopicRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
+import com.miage.m2.webappforum.service.PermissionService;
 import com.miage.m2.webappforum.service.UserService;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
@@ -27,12 +30,15 @@ public class TopicController {
   TopicRepository tr;
   @Autowired
   ProjetRepository pr;
-
   @Autowired
   UtilisateurRepository ur;
+  @Autowired
+  PermissionRepository permr;
 
   @Autowired
   UserService us;
+  @Autowired
+  PermissionService ps;
 
 
   @GetMapping(value = "/followedTopics")
@@ -98,23 +104,41 @@ public class TopicController {
       return "topic/singleTopic";
     } else {
       Utilisateur utilisateur = us.getLoggedUser();
-      topic.setCreateur(utilisateur);
+
+      //si le topic est crée
+      if (topic.getId() == null) {
+        topic.setCreation(new Date());
+        topic.setCreateur(utilisateur);
+      }
       Topic topicSaved = tr.save(topic);
+
+      //ajout du topic au projet
       List<Topic> listeTopic = projet.getTopicList();
-      listeTopic.add(topicSaved);
-      pr.save(projet);
+      if (!listeTopic.contains(topicSaved)) {
+        listeTopic.add(topicSaved);
+        pr.save(projet);
+      }
+
+      //creation des permissions
+      topicSaved.setReadUsers(topic.getReadUsers());
+      topicSaved.setWriteUsers(topic.getWriteUsers());
+      ps.setPermission(topicSaved);
+
       return "redirect:/projets/{id}/topics";
     }
 
   }
 
-  /*    TODO: permission for edit topic    */
 
   @GetMapping(value = "/projets/{idProjet}/topics/edit/{idTopic}")
   public String editTopicForm(Model model, @PathVariable("idProjet") String idProjet,
       @PathVariable("idTopic") String idTopic) {
+    Topic topic = tr.findOne(idTopic);
     model.addAttribute("projet", pr.findOne(idProjet));
-    model.addAttribute("topic", tr.findOne(idTopic));
+    model.addAttribute("topic", topic);
+    model.addAttribute("users", ur.findAll());
+    ps.getPermission(topic);
+
     return "topic/singleTopic";
   }
 
