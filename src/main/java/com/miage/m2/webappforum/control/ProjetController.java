@@ -3,6 +3,7 @@ package com.miage.m2.webappforum.control;
 import com.miage.m2.webappforum.entity.ObjectPermissionEnum;
 import com.miage.m2.webappforum.entity.Permission;
 import com.miage.m2.webappforum.entity.Projet;
+import com.miage.m2.webappforum.entity.TargetPermission;
 import com.miage.m2.webappforum.entity.TypePermissionEnum;
 import com.miage.m2.webappforum.repository.PermissionRepository;
 import com.miage.m2.webappforum.repository.ProjetRepository;
@@ -70,9 +71,9 @@ public class ProjetController {
       //create new permission
       Set<Permission> permissions = new HashSet<>();
       permissions.addAll(createProjetPermission(project.getReadUsers(), TypePermissionEnum.READ,
-          saveProjet.getId()));
+          saveProjet));
       permissions.addAll(createProjetPermission(project.getWriteUsers(), TypePermissionEnum.WRITE,
-          saveProjet.getId()));
+          saveProjet));
       permr.save(permissions);
 
       return "redirect:/projets";
@@ -101,12 +102,11 @@ public class ProjetController {
 
 
   private Set<Permission> createProjetPermission(Set<String> listIdUser,
-      TypePermissionEnum typePermissionEnum, String projetId) {
+      TypePermissionEnum typePermissionEnum, TargetPermission projet) {
     Set<Permission> permissions = new HashSet<>();
     if (listIdUser != null) {
       listIdUser.forEach(ru -> permissions.add(
-          new Permission(TypePermissionEnum.READ, ur.findOne(ru), ObjectPermissionEnum.PROJET,
-              projetId)));
+          new Permission(TypePermissionEnum.READ, ur.findOne(ru), projet)));
     }
     return permissions;
   }
