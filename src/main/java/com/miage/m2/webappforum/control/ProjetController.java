@@ -1,17 +1,11 @@
 package com.miage.m2.webappforum.control;
 
-import com.miage.m2.webappforum.entity.Permission;
 import com.miage.m2.webappforum.entity.Projet;
-import com.miage.m2.webappforum.entity.TargetPermission;
-import com.miage.m2.webappforum.entity.TypePermissionEnum;
 import com.miage.m2.webappforum.repository.PermissionRepository;
 import com.miage.m2.webappforum.repository.ProjetRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.PermissionService;
 import com.miage.m2.webappforum.service.UserService;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -78,7 +72,6 @@ public class ProjetController {
   }
 
   @PreAuthorize("hasRole('ADMIN')")
-  //@PreAuthorize("hasPermission(#idProjet, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   @GetMapping(value = "/projets/edit/{idProjet}")
   public String editProjetForm(Model model, @PathVariable("idProjet") String idProjet) {
     model.addAttribute("users", ur.findAll());
@@ -89,8 +82,5 @@ public class ProjetController {
     model.addAttribute("project", project);
     return "projet/singleProject";
   }
-
-
-
 
 }

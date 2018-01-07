@@ -51,6 +51,7 @@ public class TopicController {
   }
 
 
+  //@PreAuthorize("hasPermission(#id, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   @GetMapping(value = "/projets/{id}/topics")
   public String getAllTopicsOfProject(@PathVariable("id") String id, Model model) {
     Utilisateur utilisateur = us.getLoggedUser();

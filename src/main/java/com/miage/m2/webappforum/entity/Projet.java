@@ -6,6 +6,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.access.prepost.PostFilter;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"nom"}))
@@ -36,6 +37,7 @@ public class Projet extends TargetPermission{
     this.description = description;
   }
 
+  @PostFilter("hasPermission(filterObject, T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   public List<Topic> getTopicList() {
     return topicList;
   }
