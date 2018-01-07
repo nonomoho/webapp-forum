@@ -16,26 +16,17 @@ public class UserService {
   @Autowired
   UtilisateurRepository ur;
 
-//  public Utilisateur getLoggedUser() {
-//
-//    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//    System.out.println(user.getUsername());
-//    return (ur.findFirstByPseudo(user.getUsername()));
-////
-////    Authentication a = SecurityContextHolder.getContext().getAuthentication();
-////
-////    Map<String, String> map = (Map<String, String>) ((OAuth2Authentication) a)
-////        .getUserAuthentication().getDetails();
-////    System.out.println(map.get("given_name"));
-////    return (ur.findFirstByPseudo(map.get("given_name")));
-//
-//  }
- public Utilisateur getLoggedUser() {
-    try {
+  public Utilisateur getLoggedUser() {
+
+    if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User) {
       User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       return (ur.findFirstByPseudo(user.getUsername()));
-    } catch (Exception e) {
-      return null;
+    } else {
+      return (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
+
+
+
   }
 }

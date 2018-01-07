@@ -73,7 +73,6 @@ public class Security extends WebSecurityConfigurerAdapter {
         user.setEmail((String) map.get("email"));
         user.setPseudo((String) map.get("given_name"));
         user.setPassword("google");
-        user.setOauthId((String) map.get("sub"));
         user.setInscription(new Date());
         utilisateurRepository.save(user);
 
