@@ -1,8 +1,6 @@
 package com.miage.m2.webappforum.service;
 
-import com.miage.m2.webappforum.entity.ObjectPermissionEnum;
 import com.miage.m2.webappforum.entity.Permission;
-import com.miage.m2.webappforum.entity.Projet;
 import com.miage.m2.webappforum.entity.TargetPermission;
 import com.miage.m2.webappforum.entity.TypePermissionEnum;
 import com.miage.m2.webappforum.entity.Utilisateur;
