@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="layout/main">
 <head>
     <title>Projet</title>
@@ -9,11 +10,14 @@
 
 <section layout:fragment="mainContent">
 
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{'/projets/add'}"><span th:text="#{add}"></span></a>
+
     <table class="striped">
         <thead>
         <tr>
             <th><span th:text="#{project.name}"></span></th>
             <th><span th:text="#{project.topic}"></span></th>
+            <th sec:authorize="hasRole('ADMIN')"><span th:text="#{edit}"></span></th>
         </tr>
         </thead>
 
@@ -25,6 +29,9 @@
             </td>
             <td>
                 <p th:text="${#lists.size(projet.topicList)}"/>
+            </td>
+            <td>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{'/projets/edit/'+ ${projet.id}}"><span th:text="#{edit}"></span></a>
             </td>
         </tr>
         </tbody>

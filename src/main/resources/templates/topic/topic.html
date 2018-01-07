@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="layout/main">
 <head>
-    <title>Topics</title>
+  <title>Topics</title>
 </head>
 
 
 <section layout:fragment="mainContent">
 
-    <table class="striped">
-        <thead>
-        <tr>
-            <th><span th:text="#{topic.name}"></span></th>
-            <th><span th:text="#{topic.bool}"></span></th>
-            <th><span th:text="#{topic.lastPost}"></span></th>
-            <th><span th:text="#{topic.follow}"></span></th>
-        </tr>
-        </thead>
+  <a sec:authorize="hasRole('ADMIN')" th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}"><span
+      th:text="#{add}"></span></a>
 
-        <tbody>
-        <tr th:each="topic : ${topicList}">
-            <td>
-              <a th:href="@{'/projets/'+ ${projet.id}+'/topics/'+${topic.id}+'/messages'}"><h5 th:text="${topic?.nom}"/></a>
-            </td>
-            <td>
-                <p th:text="${topic?.ouvert}"/>
-            </td>
-            <td>
-                <span th:text="#{topic.by}"></span><p th:text="${topic?.createur?.pseudo}"/>
-                <p th:text="${topic?.creation}"/>
-            </td>
-            <td>
-              <form class="col s12" action="#" th:action="@{'/topics/'+ ${topic.id}+'/follow'}" th:method="post">
-                <button class="btn-floating btn-large yellow" type="submit" name="action">
-                  <i class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
-                </button>
-              </form>
-               <!-- <a class="btn-floating btn-large yellow" th:onclick="${@followService.addTopicFollowing(topic.id)}">
-                    <i class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
-                </a>-->
-            </td>
-        </tr>
-        </tbody>
-    </table>
+  <table class="striped">
+    <thead>
+    <tr>
+      <th><span th:text="#{topic.name}"></span></th>
+      <th><span th:text="#{topic.bool}"></span></th>
+      <th><span th:text="#{topic.lastPost}"></span></th>
+      <th><span th:text="#{topic.follow}"></span></th>
+      <th sec:authorize="hasRole('ADMIN')"><span th:text="#{edit}"></span></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="topic : ${topicList}">
+      <td>
+        <a th:href="@{'/projets/'+ ${projet.id}+'/topics/'+${topic.id}+'/messages'}"><h5
+            th:text="${topic?.nom}"/></a>
+      </td>
+      <td>
+        <p th:text="${topic?.ouvert}"/>
+      </td>
+      <td>
+        <span th:text="#{topic.by}"></span>
+        <p th:text="${topic?.createur?.pseudo}"/>
+        <p th:text="${topic?.creation}"/>
+      </td>
+      <td>
+        <form class="col s12" action="#" th:action="@{'/topics/'+ ${topic.id}+'/follow'}"
+              th:method="post">
+          <button class="btn-floating btn-large yellow" type="submit" name="action">
+            <i class="material-icons"
+               th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
+          </button>
+        </form>
+        <!-- <a class="btn-floating btn-large yellow" th:onclick="${@followService.addTopicFollowing(topic.id)}">
+             <i class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
+         </a>-->
+      </td>
+      <td>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{'/projets/'+ ${projet.id}+'/topics/edit/'+${topic.id}}">
+          <span th:text="#{edit}"></span>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 </section>
 </html>
