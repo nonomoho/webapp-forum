@@ -3,6 +3,7 @@ package com.miage.m2.webappforum.service;
 import com.miage.m2.webappforum.entity.ObjectPermissionEnum;
 import com.miage.m2.webappforum.entity.Permission;
 import com.miage.m2.webappforum.entity.Projet;
+import com.miage.m2.webappforum.entity.TargetPermission;
 import com.miage.m2.webappforum.entity.TypePermissionEnum;
 import com.miage.m2.webappforum.entity.Utilisateur;
 import com.miage.m2.webappforum.repository.PermissionRepository;
@@ -25,12 +26,11 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
   public boolean hasPermission(Authentication authentication, Object targetDomainObject,
       Object permission) {
     Utilisateur utilisateur = us.getLoggedUser();
-    if (targetDomainObject instanceof Projet) {
-      Projet projet = (Projet) targetDomainObject;
-      Permission perm = pr.findFirstByUtilisateurAndTypeObjectAndObjectIdAndType(utilisateur,
-          ObjectPermissionEnum.PROJET, projet.getId(),
-          (TypePermissionEnum) permission);
-      return perm != null;
+    TargetPermission target = (TargetPermission) targetDomainObject;
+    Permission perm = pr.findFirstByUtilisateurAndTargetPermissionIdAndType(utilisateur,
+        target, (TypePermissionEnum) permission);
+    if ( perm != null){
+      return true;
     }
     return false;
   }
@@ -39,8 +39,10 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
   public boolean hasPermission(Authentication authentication, Serializable targetId,
       String targetType, Object permission) {
     Utilisateur utilisateur = us.getLoggedUser();
+    TargetPermission target = (TargetPermission)
+
     if (targetType.equals("Projet")) {
-      Permission perm = pr.findFirstByUtilisateurAndTypeObjectAndObjectIdAndType(utilisateur,
+      Permission perm = pr.findFirstByUtilisateurAndTargetPermissionIdAndType(utilisateur,
           ObjectPermissionEnum.PROJET, targetId.toString(), (TypePermissionEnum) permission);
       return perm != null;
     }
