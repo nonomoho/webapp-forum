@@ -79,7 +79,7 @@ public class ProjetController {
     }
   }
 
-  @PreAuthorize("hasPermission(#idProjet, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
+  //@PreAuthorize("hasPermission(#idProjet, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   @GetMapping(value = "/projets/edit/{idProjet}")
   public String editProjetForm(Model model, @PathVariable("idProjet") String idProjet) {
     model.addAttribute("users", ur.findAll());
@@ -105,7 +105,7 @@ public class ProjetController {
     Set<Permission> permissions = new HashSet<>();
     if (listIdUser != null) {
       listIdUser.forEach(ru -> permissions.add(
-          new Permission(TypePermissionEnum.READ, ur.findOne(ru), projet)));
+          new Permission(typePermissionEnum, ur.findOne(ru), projet)));
     }
     return permissions;
   }

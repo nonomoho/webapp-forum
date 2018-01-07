@@ -20,7 +20,7 @@ public class Permission {
   private TypePermissionEnum type;
   @ManyToOne
   private Utilisateur utilisateur;
-  @ManyToMany
+  @ManyToOne
   private TargetPermission targetPermission;
 
   public Permission() {
