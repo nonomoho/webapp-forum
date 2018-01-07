@@ -1,20 +1,18 @@
 package com.miage.m2.webappforum.entity;
 
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
-public class Topic {
+public class Topic extends TargetPermission {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  private String id;
   private String nom;
   private Boolean ouvert;
   @ManyToOne
@@ -27,38 +25,7 @@ public class Topic {
   @Transient
   private boolean followedByUser;
 
-  @Transient
-  @ElementCollection
-  private Set<String> readUsers;
-  @Transient
-  @ElementCollection
-  private Set<String> writeUsers;
-
   public Topic() {
-  }
-
-  public Set<String> getReadUsers() {
-    return readUsers;
-  }
-
-  public void setReadUsers(Set<String> readUsers) {
-    this.readUsers = readUsers;
-  }
-
-  public Set<String> getWriteUsers() {
-    return writeUsers;
-  }
-
-  public void setWriteUsers(Set<String> writeUsers) {
-    this.writeUsers = writeUsers;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getNom() {

@@ -5,6 +5,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,19 +20,17 @@ public class Permission {
   private TypePermissionEnum type;
   @ManyToOne
   private Utilisateur utilisateur;
-  @Enumerated(EnumType.STRING)
-  private ObjectPermissionEnum typeObject;
-  private String objectId;
+  @ManyToMany
+  private TargetPermission targetPermission;
 
   public Permission() {
   }
 
   public Permission(TypePermissionEnum type, Utilisateur utilisateur,
-      ObjectPermissionEnum typeObject, String objectId) {
+      TargetPermission targetPermission) {
     this.type = type;
     this.utilisateur = utilisateur;
-    this.typeObject = typeObject;
-    this.objectId = objectId;
+    this.targetPermission = targetPermission;
   }
 
   public String getId() {
@@ -58,19 +57,11 @@ public class Permission {
     this.utilisateur = utilisateur;
   }
 
-  public ObjectPermissionEnum getTypeObject() {
-    return typeObject;
+  public TargetPermission getTargetPermission() {
+    return targetPermission;
   }
 
-  public void setTypeObject(ObjectPermissionEnum typeObject) {
-    this.typeObject = typeObject;
-  }
-
-  public String getObjectId() {
-    return objectId;
-  }
-
-  public void setObjectId(String objectId) {
-    this.objectId = objectId;
+  public void setTargetPermission(TargetPermission targetPermission) {
+    this.targetPermission = targetPermission;
   }
 }
