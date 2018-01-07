@@ -28,6 +28,7 @@ public class Utilisateur {
   private String email;
   @NotEmpty(message = "{emptyField}")
   private String password;
+  private String oauthId;
   @ManyToMany()
   private Set<Topic> followTopicList;
   private Date inscription;
@@ -91,5 +92,13 @@ public class Utilisateur {
 
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
+  }
+
+  public String getOauthId() {
+    return oauthId;
+  }
+
+  public void setOauthId(String oauthId) {
+    this.oauthId = oauthId;
   }
 }

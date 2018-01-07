@@ -65,13 +65,15 @@ public class Security extends WebSecurityConfigurerAdapter {
   @Bean
   public PrincipalExtractor principalExtractor(UtilisateurRepository utilisateurRepository, RoleRepository roleRepository) {
     return map -> {
-      Utilisateur user = utilisateurRepository.findFirstByPseudo((String) map.get("name"));
+      Utilisateur user = utilisateurRepository.findFirstByPseudo((String) map.get("given_name"));
+//      System.out.println(map);
       if (user == null) {
         user = new Utilisateur();
         user.setId((String) map.get("id"));
         user.setEmail((String) map.get("email"));
-        user.setPseudo((String) map.get("name"));
+        user.setPseudo((String) map.get("given_name"));
         user.setPassword("google");
+        user.setOauthId((String) map.get("sub"));
         user.setInscription(new Date());
         utilisateurRepository.save(user);
 
