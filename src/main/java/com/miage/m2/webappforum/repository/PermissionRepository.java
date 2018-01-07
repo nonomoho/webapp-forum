@@ -13,7 +13,7 @@ public interface PermissionRepository extends CrudRepository<Permission, String>
   @Transactional
   void deleteByTargetPermission(TargetPermission targetPermission);
 
-  Permission findFirstByUtilisateurAndTargetPermissionIdAndType(Utilisateur utilisateur,
+  Permission findFirstByUtilisateurAndTargetPermissionAndType(Utilisateur utilisateur,
       TargetPermission targetPermission, TypePermissionEnum type);
 
   List<Permission> findAllByTargetPermissionAndType(TargetPermission targetPermission,
