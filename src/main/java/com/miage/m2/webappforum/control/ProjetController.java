@@ -1,6 +1,5 @@
 package com.miage.m2.webappforum.control;
 
-import com.miage.m2.webappforum.entity.ObjectPermissionEnum;
 import com.miage.m2.webappforum.entity.Permission;
 import com.miage.m2.webappforum.entity.Projet;
 import com.miage.m2.webappforum.entity.TargetPermission;
@@ -66,7 +65,7 @@ public class ProjetController {
       Projet saveProjet = pr.save(project);
 
       //delete all existing permissions for this project
-      permr.deleteByTypeObjectAndObjectId(ObjectPermissionEnum.PROJET, saveProjet.getId());
+      permr.deleteByTargetPermission(saveProjet);
 
       //create new permission
       Set<Permission> permissions = new HashSet<>();
@@ -87,13 +86,13 @@ public class ProjetController {
     Projet project = pr.findOne(idProjet);
 
     project.setReadUsers(
-        permr.findAllByTypeObjectAndObjectIdAndType(ObjectPermissionEnum.PROJET, idProjet,
-            TypePermissionEnum.READ).stream().map(p -> p.getUtilisateur().getId())
+        permr.findAllByTargetPermissionAndType(project, TypePermissionEnum.READ).stream()
+            .map(p -> p.getUtilisateur().getId())
             .collect(Collectors.toSet()));
 
     project.setWriteUsers(
-        permr.findAllByTypeObjectAndObjectIdAndType(ObjectPermissionEnum.PROJET, idProjet,
-            TypePermissionEnum.WRITE).stream().map(p -> p.getUtilisateur().getId())
+        permr.findAllByTargetPermissionAndType(project, TypePermissionEnum.WRITE).stream()
+            .map(p -> p.getUtilisateur().getId())
             .collect(Collectors.toSet()));
 
     model.addAttribute("project", project);
