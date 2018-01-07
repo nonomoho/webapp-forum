@@ -9,7 +9,7 @@
 
 <section layout:fragment="mainContent">
 
-  <h1 th:text="${topic?.nom}"/>
+  <h4 th:text="${topic?.nom}"/>
 
   <div th:each="message : ${messageList}">
   <div class="col s12 m7">
@@ -20,7 +20,6 @@
       </div>
       <div class="card-stacked">
         <div class="card-content">
-          <!--<p th:text="${topic?.nom}"/>-->
           <p th:text="${message?.contenu}"/>
         </div>
       </div>

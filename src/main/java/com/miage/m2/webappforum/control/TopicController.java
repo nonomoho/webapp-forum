@@ -9,9 +9,8 @@ import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.UserService;
 import java.util.List;
 import java.util.Set;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,10 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-
-import javax.validation.Valid;
-import java.util.List;
 
 
 @Controller
@@ -50,15 +45,14 @@ public class TopicController {
   }
 
 
-
   @GetMapping(value = "/projets/{id}/topics")
   public String getAllTopicsOfProject(@PathVariable("id") String id, Model model) {
-      Utilisateur utilisateur = us.getLoggedUser();
+    Utilisateur utilisateur = us.getLoggedUser();
     Projet projet = pr.findOne(id);
     List<Topic> topicList = projet.getTopicList();
     topicList.forEach(t -> t.setFollowedByUser(t.getFollowerList().contains(utilisateur)));
     model.addAttribute("topicList", topicList);
-    model.addAttribute("projet",projet);
+    model.addAttribute("projet", projet);
     return "topic/topic";
   }
 
@@ -89,7 +83,8 @@ public class TopicController {
   }
 
   @PostMapping(value = "projets/{id}/topics/save")
-  public String addTopic(Model model, @PathVariable("id") String id,@ModelAttribute("topic") @Valid Topic topic,
+  public String addTopic(Model model, @PathVariable("id") String id,
+      @ModelAttribute("topic") @Valid Topic topic,
       BindingResult result) {
     Projet projet = pr.findOne(id);
     topic.setNom(topic.getNom().trim().toUpperCase());
@@ -99,11 +94,10 @@ public class TopicController {
     if (result.hasErrors()) {
       model.addAttribute("users", ur.findAll());
       model.addAttribute("topic", topic);
-      model.addAttribute("projet",projet);
+      model.addAttribute("projet", projet);
       return "topic/singleTopic";
     } else {
-      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      Utilisateur utilisateur = ur.findFirstByPseudo(authentication.getName());
+      Utilisateur utilisateur = us.getLoggedUser();
       topic.setCreateur(utilisateur);
       Topic topicSaved = tr.save(topic);
       List<Topic> listeTopic = projet.getTopicList();
@@ -117,7 +111,8 @@ public class TopicController {
   /*    TODO: permission for edit topic    */
 
   @GetMapping(value = "/projets/{idProjet}/topics/edit/{idTopic}")
-  public String editTopicForm(Model model, @PathVariable("idProjet") String idProjet, @PathVariable("idTopic") String idTopic) {
+  public String editTopicForm(Model model, @PathVariable("idProjet") String idProjet,
+      @PathVariable("idTopic") String idTopic) {
     model.addAttribute("projet", pr.findOne(idProjet));
     model.addAttribute("topic", tr.findOne(idTopic));
     return "topic/singleTopic";

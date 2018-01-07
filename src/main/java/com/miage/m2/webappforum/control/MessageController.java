@@ -11,14 +11,10 @@ import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.UserService;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,8 +43,6 @@ public class MessageController {
 
   @GetMapping(value = "/projets/{id}/topics/{idTopic}/messages")
   public String getAllMessageTopic(@PathVariable("id") String id, @PathVariable("idTopic") String idTopic, Model model) {
-    Utilisateur utilisateur = us.getLoggedUser();
-    Projet projet = pr.findOne(id);
     Topic topic = tr.findOne(idTopic);
     List<Message> messageList = topic.getMessageList();
     model.addAttribute("messageList", messageList);
@@ -75,8 +69,7 @@ public class MessageController {
     Topic topic = tr.findOne(idTopic);
     message.setContenu(message.getContenu());
     message.setDate(new Date());
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Utilisateur utilisateur = ur.findFirstByPseudo(authentication.getName());
+    Utilisateur utilisateur = us.getLoggedUser();
     message.setUtilisateur(utilisateur);
     Message messageSaved = mr.save(message);
     List<Message> listeMessage = topic.getMessageList();
