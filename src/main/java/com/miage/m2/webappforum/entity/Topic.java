@@ -20,12 +20,22 @@ public class Topic extends TargetPermission {
   private Date creation;
   @OneToMany
   private List<Message> messageList;
+  @ManyToOne
+  private Projet projet;
   @ManyToMany(mappedBy = "followTopicList")
   private Set<Utilisateur> followerList;
   @Transient
   private boolean followedByUser;
 
   public Topic() {
+  }
+
+  public Projet getProjet() {
+    return projet;
+  }
+
+  public void setProjet(Projet projet) {
+    this.projet = projet;
   }
 
   public String getNom() {

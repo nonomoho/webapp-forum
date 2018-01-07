@@ -56,7 +56,7 @@ public class TopicController {
   public String getAllTopicsOfProject(@PathVariable("id") String id, Model model) {
     Utilisateur utilisateur = us.getLoggedUser();
     Projet projet = pr.findOne(id);
-    List<Topic> topicList = projet.getTopicList();
+    Iterable<Topic> topicList = tr.findByProjet(projet);
     topicList.forEach(t -> t.setFollowedByUser(t.getFollowerList().contains(utilisateur)));
     model.addAttribute("topicList", topicList);
     model.addAttribute("projet", projet);
@@ -111,14 +111,9 @@ public class TopicController {
         topic.setCreation(new Date());
         topic.setCreateur(utilisateur);
       }
+      topic.setProjet(projet);
       Topic topicSaved = tr.save(topic);
 
-      //ajout du topic au projet
-      List<Topic> listeTopic = projet.getTopicList();
-      if (!listeTopic.contains(topicSaved)) {
-        listeTopic.add(topicSaved);
-        pr.save(projet);
-      }
 
       //creation des permissions
       topicSaved.setReadUsers(topic.getReadUsers());

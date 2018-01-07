@@ -15,7 +15,7 @@ public class Projet extends TargetPermission{
   @NotEmpty(message = "{emptyField}")
   private String nom;
   private String description;
-  @OneToMany
+  @OneToMany (mappedBy = "projet")
   private List<Topic> topicList;
 
   public Projet() {
