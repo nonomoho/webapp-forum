@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,7 +52,7 @@ public class TopicController {
   }
 
 
-  //@PreAuthorize("hasPermission(#id, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
+  @PreAuthorize("hasPermission(#id, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   @GetMapping(value = "/projets/{id}/topics")
   public String getAllTopicsOfProject(@PathVariable("id") String id, Model model) {
     Utilisateur utilisateur = us.getLoggedUser();
@@ -79,6 +80,7 @@ public class TopicController {
     return "redirect:/followedTopics";
   }
 
+  @PreAuthorize("hasPermission(#id, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE) or hasRole('ADMIN')")
   @GetMapping(value = "/projets/{id}/topics/add")
   public String addTopicForm(@PathVariable("id") String id, Model model) {
     model.addAttribute("users", ur.findAll());

@@ -10,8 +10,10 @@
 
 <section layout:fragment="mainContent">
 
-  <a sec:authorize="hasRole('ADMIN')" th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}"><span
-      th:text="#{add}"></span></a>
+  <a th:if="${@userPermissionEvaluator.hasPermission(null, projet, T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE) or #authorization.expression('hasRole(''ADMIN'')')}"
+     th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}">
+    <span th:text="#{add}"></span>
+  </a>
 
   <table class="striped">
     <thead>
@@ -27,8 +29,9 @@
     <tbody>
     <tr th:each="topic : ${topicList}">
       <td>
-        <a th:href="@{'/projets/'+ ${projet.id}+'/topics/'+${topic.id}+'/messages'}"><h5
-            th:text="${topic?.nom}"/></a>
+        <a th:href="@{'/projets/'+ ${projet.id}+'/topics/'+${topic.id}+'/messages'}">
+          <h5 th:text="${topic?.nom}"/>
+        </a>
       </td>
       <td>
         <p th:text="${topic?.ouvert}"/>
@@ -51,7 +54,8 @@
          </a>-->
       </td>
       <td>
-        <a sec:authorize="hasRole('ADMIN')" th:href="@{'/projets/'+ ${projet.id}+'/topics/edit/'+${topic.id}}">
+        <a sec:authorize="hasRole('ADMIN')"
+           th:href="@{'/projets/'+ ${projet.id}+'/topics/edit/'+${topic.id}}">
           <span th:text="#{edit}"></span>
         </a>
       </td>
