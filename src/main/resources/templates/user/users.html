@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main">
+<head>
+    <title>Utilisateurs</title>
+</head>
+<section layout:fragment="mainContent">
+<table class="striped">
+        <thead>
+        <tr>
+            <th><span>Liste des utilisateurs</span></th>
+
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="utilisateur : ${utilisateurs}">
+                <td>
+                    <a th:href="@{'/utilisateurs/'+ ${utilisateur.id}}"><h5 th:text="${utilisateur?.pseudo}"/></a>
+
+                </td>
+            </tr>
+        </tbody>
+
+</table>
+</section>
+</html>

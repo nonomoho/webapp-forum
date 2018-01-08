@@ -41,9 +41,9 @@ public class Security extends WebSecurityConfigurerAdapter {
     auth.jdbcAuthentication()
         .dataSource(dataSource)
         .passwordEncoder(passwordEncoder)
-        .usersByUsernameQuery("SELECT pseudo, password, 1 FROM utilisateur WHERE pseudo=?")
+        .usersByUsernameQuery("SELECT pseudo, password, 1 FROM user WHERE pseudo=?")
         .authoritiesByUsernameQuery(
-            "select u.pseudo, r.name from utilisateur u join role_utilisateurs ru on u.id = utilisateurs_id join role r on ru.roles_id = r.id where pseudo = ?");
+            "select u.pseudo, r.name from user u join role_utilisateurs ru on u.id = utilisateurs_id join role r on ru.roles_id = r.id where pseudo = ?");
   }
 
   @Override
