@@ -44,10 +44,13 @@ public class TopicController {
 
   @GetMapping(value = "/followedTopics")
   public String getFollowedTopics(Model model) {
+    System.out.println(us.getLoggedUser());
+
     Utilisateur utilisateur = us.getLoggedUser();
     Set<Topic> topicList = utilisateur.getFollowTopicList();
-    topicList.forEach(t -> System.out.println(t.getId()));
-    topicList.forEach(t -> t.setFollowedByUser(true));
+    if (topicList != null) {
+      topicList.forEach(t -> t.setFollowedByUser(true));
+    }
     model.addAttribute("topicList", topicList);
     model.addAttribute("follow", true);
     return "topic/topic";
