@@ -46,10 +46,10 @@ public class TopicController {
   public String getFollowedTopics(Model model) {
     Utilisateur utilisateur = us.getLoggedUser();
     Set<Topic> topicList = utilisateur.getFollowTopicList();
-    System.out.println("-------- ok  -------");
     topicList.forEach(t -> System.out.println(t.getId()));
     topicList.forEach(t -> t.setFollowedByUser(true));
     model.addAttribute("topicList", topicList);
+    model.addAttribute("follow", true);
     return "topic/topic";
   }
 
@@ -62,6 +62,7 @@ public class TopicController {
     Iterable<Topic> topicList = tr.findByProjet(projet);
     topicList.forEach(t -> t.setFollowedByUser(t.getFollowerList().contains(utilisateur)));
     model.addAttribute("topicList", topicList);
+    model.addAttribute("projet", projet);
     return "topic/topic";
   }
 

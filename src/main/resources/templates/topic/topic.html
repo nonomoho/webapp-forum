@@ -10,10 +10,12 @@
 
 <section layout:fragment="mainContent">
 
-  <a th:if="${@userPermissionEvaluator.hasPermission(null, projet, T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE) or #authorization.expression('hasRole(''ADMIN'')')}"
-     th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}">
-    <span th:text="#{add}"></span>
-  </a>
+  <div th:unless="${follow}">
+    <a th:if="${@userPermissionEvaluator.hasPermission(null, projet, T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE) or #authorization.expression('hasRole(''ADMIN'')')}"
+       th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}">
+      <span th:text="#{add}"></span>
+    </a>
+  </div>
 
   <table class="striped">
     <thead>
@@ -55,7 +57,7 @@
       </td>
       <td>
         <a sec:authorize="hasRole('ADMIN')"
-           th:href="@{'/projets/'+ ${projet.id}+'/topics/edit/'+${topic.id}}">
+           th:href="@{'/projets/'+ ${topic.projet.id}+'/topics/edit/'+${topic.id}}">
           <span th:text="#{edit}"></span>
         </a>
       </td>
@@ -64,4 +66,5 @@
   </table>
 
 </section>
+
 </html>

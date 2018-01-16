@@ -18,6 +18,7 @@ public abstract class TargetPermission {
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
+  private boolean needAuth;
 
   @Transient
   @ElementCollection
@@ -48,5 +49,13 @@ public abstract class TargetPermission {
 
   public void setWriteUsers(Set<String> writeUsers) {
     this.writeUsers = writeUsers;
+  }
+
+  public Boolean getNeedAuth() {
+    return needAuth;
+  }
+
+  public void setNeedAuth(Boolean needAuth) {
+    this.needAuth = needAuth;
   }
 }

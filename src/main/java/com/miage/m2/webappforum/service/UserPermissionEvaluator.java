@@ -27,8 +27,14 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
   @Override
   public boolean hasPermission(Authentication authentication, Object targetDomainObject,
       Object permission) {
-    Utilisateur utilisateur = us.getLoggedUser();
+
     TargetPermission target = (TargetPermission) targetDomainObject;
+
+    if (!target.getNeedAuth()){
+      return true;
+    }
+
+    Utilisateur utilisateur = us.getLoggedUser();
     Permission perm = pr.findFirstByUtilisateurAndTargetPermissionAndType(utilisateur,
         target, (TypePermissionEnum) permission);
     if ( perm != null){
