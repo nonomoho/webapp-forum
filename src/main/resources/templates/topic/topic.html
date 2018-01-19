@@ -23,7 +23,7 @@
       <th><span th:text="#{topic.name}"></span></th>
       <th><span th:text="#{topic.bool}"></span></th>
       <th><span th:text="#{topic.lastPost}"></span></th>
-      <th><span th:text="#{topic.follow}"></span></th>
+      <th sec:authorize="isAuthenticated()"><span th:text="#{topic.follow}"></span></th>
       <th sec:authorize="hasRole('ADMIN')"><span th:text="#{edit}"></span></th>
     </tr>
     </thead>
@@ -43,7 +43,7 @@
         <p th:text="${topic?.createur?.pseudo}"/>
         <p th:text="${topic?.creation}"/>
       </td>
-      <td>
+      <td sec:authorize="isAuthenticated()">
         <form class="col s12" action="#" th:action="@{'/topics/'+ ${topic.id}+'/follow'}"
               th:method="post">
           <button class="btn-floating btn-large yellow" type="submit" name="action">

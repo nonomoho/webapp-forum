@@ -30,7 +30,7 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
 
     TargetPermission target = (TargetPermission) targetDomainObject;
 
-    if (!target.getNeedAuth()) {
+    if (permission == TypePermissionEnum.READ && !target.getNeedAuth()) {
       return true;
     }
 
