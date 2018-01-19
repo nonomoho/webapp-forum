@@ -40,7 +40,7 @@
                         <a onclick="$('#logout').submit()" th:text="#{logout}"/>
                     </form>
                 </li>
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/projets}"><span th:text="#{projects}"></span></a>
+                <li><a th:href="@{/projets}"><span th:text="#{projects}"></span></a>
                 </li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/followedTopics}"><span
                         th:text="#{followedTopics}"></span></a></li>

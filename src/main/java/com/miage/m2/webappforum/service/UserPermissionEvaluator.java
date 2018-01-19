@@ -30,16 +30,19 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
 
     TargetPermission target = (TargetPermission) targetDomainObject;
 
-    if (!target.getNeedAuth()){
+    if (!target.getNeedAuth()) {
       return true;
     }
 
     Utilisateur utilisateur = us.getLoggedUser();
-    Permission perm = pr.findFirstByUtilisateurAndTargetPermissionAndType(utilisateur,
-        target, (TypePermissionEnum) permission);
-    if ( perm != null){
-      return true;
+    if (utilisateur != null) {
+      Permission perm = pr.findFirstByUtilisateurAndTargetPermissionAndType(utilisateur,
+          target, (TypePermissionEnum) permission);
+      if (perm != null) {
+        return true;
+      }
     }
+
     return false;
   }
 
