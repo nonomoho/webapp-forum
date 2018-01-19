@@ -82,14 +82,18 @@
 <script th:fragment="rights_js">
 
   $("#auth").on("change", function () {
-    var status = $(this).prop('checked');
+    showTable();
+
+  });
+
+  function showTable(){
+    var status = $("#auth").prop('checked');
     if (status) {
       $("#table").show();
     } else {
       $("#table").hide();
     }
-
-  });
+  }
 
   //filter table rows with search input value
   $("#search").keyup(function (event) {
@@ -114,7 +118,7 @@
 
   //remove hidden fields that prevent checkbox from showing
   $(document).ready(function () {
-    $("#table").hide();
+    showTable();
     $('input[name=_readUsers]').remove();
     $('input[name=_writeUsers]').remove();
     $('input[name=_needAuth]').remove();

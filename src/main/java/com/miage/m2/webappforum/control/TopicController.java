@@ -89,9 +89,14 @@ public class TopicController {
   @GetMapping(value = "/projets/{id}/topics/add")
   public String addTopicForm(@PathVariable("id") String id, Model model) {
     model.addAttribute("users", ur.findAll());
-    model.addAttribute("topic", new Topic());
+    Topic topic = new Topic();
     Projet projet = pr.findOne(id);
     model.addAttribute("projet", projet);
+    ps.getPermission(projet);
+    topic.setReadUsers(projet.getReadUsers());
+    topic.setWriteUsers(projet.getWriteUsers());
+    topic.setNeedAuth(projet.getNeedAuth());
+    model.addAttribute("topic", topic);
     return "topic/singleTopic";
 
   }
