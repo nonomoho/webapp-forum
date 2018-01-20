@@ -82,7 +82,7 @@ public class MessageController {
     List<Message> listeMessage = topic.getMessageList();
     listeMessage.add(messageSaved);
     tr.save(topic);
-    //gtsendEmail(topic);
+    sendEmail(topic);
     return "redirect:/projets/{id}/topics/{idTopic}/messages";
 
   }
@@ -96,10 +96,20 @@ public class MessageController {
 
     MimeMessageHelper helper = new MimeMessageHelper(message);
 
+    String link = "http://localhost:8082/projets/" + topic.getProjet().getId()
+        + "/topics/" + topic.getId() + "/messages";
+
     helper.setFrom("SpringSocial");
     helper.setTo(mails);
-    helper.setSubject("Un nouveau message a été posté");
-    helper.setText("How are you?", true);
+    helper.setText("<html>"
+        + "<body>"
+        + "<h1>Nouveau message dans le topic " + topic.getNom() + "</h1>"
+        + "<p>Vous suivez le topic et un nouveau message a été posté.</p>"
+        + "<p>Cliquez <a href=" + link
+        + ">ici</a> pour voir les messages.</p>"
+        + "</body>"
+        + "</html>", true);
+    helper.setSubject("Nouveau message");
 
     sender.send(message);
 
