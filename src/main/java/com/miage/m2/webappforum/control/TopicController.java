@@ -10,7 +10,7 @@ import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.PermissionService;
 import com.miage.m2.webappforum.service.UserService;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +117,9 @@ public class TopicController {
     } else {
       Utilisateur utilisateur = us.getLoggedUser();
 
+      if (topic.getFollowerList() == null) {
+        topic.setFollowerList(new HashSet<Utilisateur>());
+      }
       topic.getFollowerList().add(utilisateur);
 
       //si le topic est crée
@@ -126,7 +129,6 @@ public class TopicController {
       }
       topic.setProjet(projet);
       Topic topicSaved = tr.save(topic);
-
 
       //creation des permissions
       topicSaved.setReadUsers(topic.getReadUsers());
