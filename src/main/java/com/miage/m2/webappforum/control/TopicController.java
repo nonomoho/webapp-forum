@@ -123,7 +123,7 @@ public class TopicController {
       topic.getFollowerList().add(utilisateur);
 
       //si le topic est crée
-      if (topic.getId() == null) {
+      if (topic.getId().isEmpty()) {
         topic.setCreation(new Date());
         topic.setCreateur(utilisateur);
       }
