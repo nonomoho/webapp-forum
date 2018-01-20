@@ -11,31 +11,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
-import java.util.UUID;
+
 
 import static junit.framework.TestCase.assertEquals;
-import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = WebappForumApplication.class)
+@SpringBootTest(classes = {WebappForumApplication.class,UserService.class})
 @DataJpaTest
-public class testUtilisateurController {
+public class UtilisateurControllerTest {
 
-    private UserService userService = new UserService();
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UtilisateurRepository ur;
