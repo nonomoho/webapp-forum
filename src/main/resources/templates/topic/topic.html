@@ -10,11 +10,19 @@
 
 <section layout:fragment="mainContent">
 
-  <div th:unless="${follow}">
+  <div class="right-align" th:unless="${follow}">
     <a th:if="${@userPermissionEvaluator.hasPermission(null, projet, T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE)}"
-       th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}">
+       th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}"
+       class="waves-effect waves-light btn-large">
       <span th:text="#{add}"></span>
     </a>
+  </div>
+
+  <div th:unless="${follow}">
+    <h3 th:text="#{topic.list} +' '+ ${projet.nom}"></h3>
+  </div>
+  <div th:if="${follow}">
+    <h3 th:text="#{topic.following}"></h3>
   </div>
 
   <table class="striped">
@@ -24,7 +32,8 @@
       <th><span th:text="#{topic.bool}"></span></th>
       <th><span th:text="#{topic.lastPost}"></span></th>
       <th sec:authorize="isAuthenticated()"><span th:text="#{topic.follow}"></span></th>
-      <th th:if="${@userPermissionEvaluator.isOwnerOfTopics(topicList)}"><span th:text="#{edit}"></span></th>
+      <th th:if="${@userPermissionEvaluator.isOwnerOfTopics(topicList)}"><span
+          th:text="#{edit}"></span></th>
     </tr>
     </thead>
 

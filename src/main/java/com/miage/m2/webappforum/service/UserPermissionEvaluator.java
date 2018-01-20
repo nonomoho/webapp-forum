@@ -9,13 +9,11 @@ import com.miage.m2.webappforum.entity.Utilisateur;
 import com.miage.m2.webappforum.repository.PermissionRepository;
 import com.miage.m2.webappforum.repository.TargetPermissionRepository;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,7 +32,7 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
   public boolean hasPermission(Authentication authentication, Object targetDomainObject,
       Object permission) {
 
-    if (isAdmin()){
+    if (isAdmin()) {
       return true;
     }
 
@@ -81,9 +79,13 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
     return false;
   }
 
-  public boolean isAdmin(){
-    Set<String> roles = us.getLoggedUser().getRoles().stream().map(Role::getName).collect(Collectors.toSet());
-    return roles.contains("ADMIN");
+  public boolean isAdmin() {
+    if (us.getLoggedUser() != null) {
+      Set<String> roles = us.getLoggedUser().getRoles().stream().map(Role::getName)
+          .collect(Collectors.toSet());
+      return roles.contains("ADMIN");
+    }
+    return false;
   }
 
 

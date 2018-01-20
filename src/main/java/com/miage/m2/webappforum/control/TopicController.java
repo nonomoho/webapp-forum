@@ -106,7 +106,7 @@ public class TopicController {
       BindingResult result) {
     Projet projet = pr.findOne(id);
     topic.setNom(topic.getNom().trim().toUpperCase());
-    if (topic.getId().isEmpty() && pr.existsByNom(topic.getNom())) {
+    if (topic.getId().isEmpty() && tr.existsByNomAndProjet(topic.getNom(), projet)) {
       result.rejectValue("nom", "topic.nameAlreadyExist");
     }
     if (result.hasErrors()) {
@@ -117,15 +117,12 @@ public class TopicController {
     } else {
       Utilisateur utilisateur = us.getLoggedUser();
 
-      if (topic.getFollowerList() == null) {
-        topic.setFollowerList(new HashSet<Utilisateur>());
-      }
-      topic.getFollowerList().add(utilisateur);
-
       //si le topic est crée
       if (topic.getId().isEmpty()) {
         topic.setCreation(new Date());
         topic.setCreateur(utilisateur);
+        topic.setFollowerList(new HashSet<Utilisateur>());
+        topic.getFollowerList().add(utilisateur);
       }
       topic.setProjet(projet);
       Topic topicSaved = tr.save(topic);
