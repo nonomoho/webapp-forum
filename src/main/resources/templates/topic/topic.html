@@ -11,7 +11,7 @@
 <section layout:fragment="mainContent">
 
   <div th:unless="${follow}">
-    <a th:if="${@userPermissionEvaluator.hasPermission(null, projet, T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE) or #authorization.expression('hasRole(''ADMIN'')')}"
+    <a th:if="${@userPermissionEvaluator.hasPermission(null, projet, T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE)}"
        th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}">
       <span th:text="#{add}"></span>
     </a>
@@ -24,7 +24,7 @@
       <th><span th:text="#{topic.bool}"></span></th>
       <th><span th:text="#{topic.lastPost}"></span></th>
       <th sec:authorize="isAuthenticated()"><span th:text="#{topic.follow}"></span></th>
-      <th sec:authorize="hasRole('ADMIN')"><span th:text="#{edit}"></span></th>
+      <th th:if="${@userPermissionEvaluator.isOwnerOfTopics(topicList)}"><span th:text="#{edit}"></span></th>
     </tr>
     </thead>
 
@@ -55,8 +55,8 @@
              <i class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
          </a>-->
       </td>
-      <td>
-        <a sec:authorize="hasRole('ADMIN')"
+      <td th:if="${@userPermissionEvaluator.isOwner(topic)}">
+        <a sec:authorize="hasAuthority('ADMIN')"
            th:href="@{'/projets/'+ ${topic.projet.id}+'/topics/edit/'+${topic.id}}">
           <span th:text="#{edit}"></span>
         </a>

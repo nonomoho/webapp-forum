@@ -44,7 +44,6 @@ public class TopicController {
 
   @GetMapping(value = "/followedTopics")
   public String getFollowedTopics(Model model) {
-    System.out.println(us.getLoggedUser());
 
     Utilisateur utilisateur = us.getLoggedUser();
     Set<Topic> topicList = utilisateur.getFollowTopicList();
@@ -85,7 +84,7 @@ public class TopicController {
     return "redirect:/followedTopics";
   }
 
-  @PreAuthorize("hasPermission(#id, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE) or hasRole('ADMIN')")
+  @PreAuthorize("hasPermission(#id, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE)")
   @GetMapping(value = "/projets/{id}/topics/add")
   public String addTopicForm(@PathVariable("id") String id, Model model) {
     model.addAttribute("users", ur.findAll());
@@ -117,6 +116,8 @@ public class TopicController {
       return "topic/singleTopic";
     } else {
       Utilisateur utilisateur = us.getLoggedUser();
+
+      topic.getFollowerList().add(utilisateur);
 
       //si le topic est crée
       if (topic.getId() == null) {

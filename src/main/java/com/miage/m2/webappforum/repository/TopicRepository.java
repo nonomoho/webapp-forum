@@ -7,6 +7,6 @@ import org.springframework.security.access.prepost.PostFilter;
 
 public interface TopicRepository extends CrudRepository<Topic, String> {
 
-  @PostFilter("hasPermission(filterObject, T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ) or hasRole('ADMIN')")
+  @PostFilter("hasPermission(filterObject, T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   Iterable<Topic> findByProjet(Projet projet);
 }

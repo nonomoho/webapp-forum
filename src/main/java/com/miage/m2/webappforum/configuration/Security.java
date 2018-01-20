@@ -5,6 +5,7 @@ import com.miage.m2.webappforum.entity.Utilisateur;
 import com.miage.m2.webappforum.repository.RoleRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import java.util.Date;
+import java.util.HashSet;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,9 +35,6 @@ public class Security extends WebSecurityConfigurerAdapter {
 
   @Autowired
   protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication()
-        .withUser("user").password("password")
-        .roles("USER").and().withUser("admin").password("admin").roles("ADMIN");
 
     auth.jdbcAuthentication()
         .dataSource(dataSource)
@@ -63,7 +61,8 @@ public class Security extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public PrincipalExtractor principalExtractor(UtilisateurRepository utilisateurRepository, RoleRepository roleRepository) {
+  public PrincipalExtractor principalExtractor(UtilisateurRepository utilisateurRepository,
+      RoleRepository roleRepository) {
     return map -> {
       Utilisateur user = utilisateurRepository.findFirstByPseudo((String) map.get("given_name"));
 //      System.out.println(map);
@@ -82,6 +81,38 @@ public class Security extends WebSecurityConfigurerAdapter {
       }
       return user;
     };
+  }
+
+  @Bean
+  public boolean initData(UtilisateurRepository utilisateurRepository,
+      RoleRepository roleRepository) {
+
+    Utilisateur u = utilisateurRepository.findFirstByPseudo("admin");
+    if (u == null) {
+      u = new Utilisateur();
+      u.setPseudo("admin");
+      u.setPassword(passwordEncoder.encode("admin"));
+      u.setEmail("admin@admin");
+      u.setInscription(new Date());
+      utilisateurRepository.save(u);
+    }
+
+    String[] roles = {"ADMIN", "USER"};
+    for (String role : roles) {
+      Role r = roleRepository.getRoleByName(role);
+      if (r == null) {
+        r = new Role();
+        r.setName(role);
+        r.setUtilisateurs(new HashSet<>());
+        if (role.equals("ADMIN")) {
+          r.getUtilisateurs().add(u);
+        }
+        roleRepository.save(r);
+      }
+    }
+
+    return true;
+
   }
 
   @Bean

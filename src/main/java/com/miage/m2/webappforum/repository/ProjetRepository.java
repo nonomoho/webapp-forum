@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PostFilter;
 public interface ProjetRepository extends CrudRepository<Projet, String> {
 
   @Override
-  @PostFilter("hasPermission(filterObject, T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ) or hasRole('ADMIN')")
+  @PostFilter("hasPermission(filterObject, T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   Iterable<Projet> findAll();
 
   Boolean existsByNom(String nom);

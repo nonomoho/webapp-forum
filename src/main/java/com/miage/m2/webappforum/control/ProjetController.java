@@ -39,7 +39,7 @@ public class ProjetController {
     return "projet/projet";
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping(value = "/projets/add")
   public String addProjectForm(Model model) {
     model.addAttribute("users", ur.findAll());
@@ -47,7 +47,7 @@ public class ProjetController {
     return "projet/singleProject";
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAuthority('ADMIN')")
   @PostMapping(value = "/projets/save")
   public String addProject(Model model, @ModelAttribute("project") @Valid Projet project,
       BindingResult result) {
@@ -71,7 +71,7 @@ public class ProjetController {
     }
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping(value = "/projets/edit/{idProjet}")
   public String editProjetForm(Model model, @PathVariable("idProjet") String idProjet) {
     model.addAttribute("users", ur.findAll());

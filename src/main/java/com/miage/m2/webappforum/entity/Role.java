@@ -9,9 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
-public class Role {
+public class Role implements GrantedAuthority {
 
   @Id
   @GeneratedValue(generator = "uuid")
@@ -20,7 +21,7 @@ public class Role {
 
   private String name;
 
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable
   private Set<Utilisateur> utilisateurs;
 
@@ -49,5 +50,10 @@ public class Role {
 
   public void setUtilisateurs(Set<Utilisateur> utilisateurs) {
     this.utilisateurs = utilisateurs;
+  }
+
+  @Override
+  public String getAuthority() {
+    return name;
   }
 }
