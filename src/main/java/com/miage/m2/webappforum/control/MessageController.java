@@ -2,7 +2,6 @@ package com.miage.m2.webappforum.control;
 
 import com.miage.m2.webappforum.AOC.LogExecutionTimes;
 import com.miage.m2.webappforum.entity.Message;
-import com.miage.m2.webappforum.entity.Projet;
 import com.miage.m2.webappforum.entity.Topic;
 import com.miage.m2.webappforum.entity.Utilisateur;
 import com.miage.m2.webappforum.repository.MessageRepository;
@@ -15,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -121,25 +119,17 @@ public class MessageController {
 
   }
 
-//  @Transactional
+//  @LogExecutionTimes
+//  @GetMapping("/test")
 //  public String add1000Messages() {
-//    System.out.println("Bonjour je suis là");
-////    Projet projet = new Projet();
-////    projet.setNom("projet");
-//////    pr.save(projet);
-////
+//    System.out.println("lol");
+//
 //    Utilisateur utilisateur = new Utilisateur();
-//    utilisateur.setPseudo("test");
-//    utilisateur.setEmail("test@test.test");
-//    utilisateur.setPassword("test");
+//    utilisateur.setPseudo("test6");
+//    utilisateur.setEmail("test6@test.test");
+//    utilisateur.setPassword("test2");
 //    utilisateur.setInscription(new Date());
 //    ur.save(utilisateur);
-//
-////    Topic topic = new Topic();
-////    topic.setProjet(projet);
-////    topic.setCreateur(utilisateur);
-////    topic.setNom("topic");
-////    tr.save(topic);
 //
 //    List<Message> messages = new ArrayList<>();
 //    for (int i = 0; i < 1000; i++) {
@@ -150,8 +140,8 @@ public class MessageController {
 //      messages.add(message);
 //    }
 //    mr.save(messages);
-//  return "ok";
+//    return "index";
 //  }
-//
+
 
 }

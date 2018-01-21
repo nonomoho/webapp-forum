@@ -1,29 +1,46 @@
-//package com.miage.m2.webappforum.AOCTest;
-//
-//import com.miage.m2.webappforum.WebappForumApplication;
-//import com.miage.m2.webappforum.control.MessageController;
-//import com.miage.m2.webappforum.service.FollowService;
-//import com.miage.m2.webappforum.service.UserService;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-//
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@SpringBootTest(classes = {WebappForumApplication.class,MessageController.class})
-//@DataJpaTest
-//public class MessageTest {
-//
-//
-//  @Autowired
-//  MessageController messageController;
-//
-//  @Test
-//  public void testMessages() {
-//    messageController
-//        .add1000Messages();
-//  }
-//
-//}
+package com.miage.m2.webappforum.AOCTest;
+
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
+import com.miage.m2.webappforum.control.MessageController;
+import com.miage.m2.webappforum.AOC.MyAspect;
+import com.miage.m2.webappforum.repository.MessageRepository;
+import com.miage.m2.webappforum.repository.UtilisateurRepository;
+import com.miage.m2.webappforum.service.MessageService;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@RunWith(MockitoJUnitRunner.class)
+@SupportedAnnotationTypes(value = "LogExecutionTimes")
+public class MessageTest {
+
+  MockMvc mvc;
+
+  UtilisateurRepository ur = mock(UtilisateurRepository.class);
+  MessageRepository mr = mock(MessageRepository.class);
+  MyAspect ma = mock(MyAspect.class);
+
+
+  @InjectMocks
+  private MessageService messageService;
+
+  @Before
+  public void setUp() {
+    mvc = standaloneSetup(messageService).build();
+  }
+
+  @Test
+  public void testMessages() {
+    messageService.addMessages(10000);
+  }
+
+}
