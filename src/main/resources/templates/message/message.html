@@ -10,7 +10,7 @@
 <section layout:fragment="mainContent">
 
   <nav>
-    <div class="nav-wrapper">
+    <div class="nav-wrapper teal lighten-3">
       <div class="col s12">
         <a th:href="@{'/projets/'+ ${topic.projet.id}+'/topics'}" class="breadcrumb"
            th:text="${topic.projet.nom}"></a>
@@ -55,7 +55,7 @@
 
     <textarea id="froala-editor" th:field="*{contenu}"></textarea>
     <!-- SUBMIT -->
-    <button onclick="maFunction()" class="btn waves-effect waves-light" type="post" name="action">
+    <button onclick="maFunction()" class="btn waves-effect waves-light green lighten-1" type="post" name="action">
       <span th:text="#{add}"></span>
       <i class="material-icons right">send</i>
     </button>
