@@ -25,8 +25,6 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
 
   @Autowired
   PermissionRepository pr;
-  @Autowired
-  TopicRepository tr;
 
   @Autowired
   TargetPermissionRepository tpr;
