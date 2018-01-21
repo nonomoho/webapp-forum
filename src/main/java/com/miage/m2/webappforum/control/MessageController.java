@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,7 @@ public class MessageController {
   private JavaMailSender sender;
 
 
+  @PreAuthorize("hasPermission(#idTopic, 'Topic', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   @GetMapping(value = "/projets/{id}/topics/{idTopic}/messages")
   public String getAllMessageTopic(@PathVariable("id") String id,
       @PathVariable("idTopic") String idTopic, Model model) {
@@ -56,12 +58,13 @@ public class MessageController {
     return "message/message";
   }
 
-
+  @PreAuthorize("hasPermission(#idTopic, 'Topic', T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE)")
   @PostMapping(value = "projets/{id}/topics/{idTopic}/messages/save")
   public String addMessage(@PathVariable("idTopic") String idTopic, Model model,
-      @ModelAttribute("message") @Valid Message message, BindingResult result) throws MessagingException {
+      @ModelAttribute("message") @Valid Message message, BindingResult result)
+      throws MessagingException {
 
-    if (result.hasErrors()){
+    if (result.hasErrors()) {
       result.getAllErrors().toString();
       Topic topic = tr.findOne(idTopic);
       model.addAttribute("messageList", topic.getMessageList());

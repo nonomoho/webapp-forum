@@ -72,11 +72,6 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
     return topic.getCreateur().equals(us.getLoggedUser());
   }
 
-  public boolean isOwner(String topic) {
-    return  isOwner(tr.findOne(topic));
-  }
-
-
   public boolean isOwnerOfTopics(Set<Topic> topics) {
     for (Topic topic : topics) {
       if (isOwner(topic)) {
