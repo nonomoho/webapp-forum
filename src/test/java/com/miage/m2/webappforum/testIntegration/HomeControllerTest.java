@@ -5,6 +5,7 @@ import com.miage.m2.webappforum.WebappForumApplication;
 import com.miage.m2.webappforum.configuration.Language;
 import com.miage.m2.webappforum.configuration.Permission;
 import com.miage.m2.webappforum.configuration.Security;
+import com.miage.m2.webappforum.control.HomeController;
 import com.miage.m2.webappforum.control.LoginController;
 import com.miage.m2.webappforum.repository.RoleRepository;
 import com.miage.m2.webappforum.service.UserService;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-public class LoginControllerTest {
+public class HomeControllerTest {
 
 
     private MockMvc mvc;
@@ -33,12 +34,12 @@ public class LoginControllerTest {
     @Before
     public void setUp() {
 
-        this.mvc = standaloneSetup(new LoginController()).alwaysExpect(status().isOk()).build();
+        this.mvc = standaloneSetup(new HomeController()).alwaysExpect(status().isOk()).build();
     }
     @Test
-    public void testLoginRedirect() throws Exception {
+    public void testHomeRedirect() throws Exception {
 
-        this.mvc.perform(get("/login")).andExpect(view().name("login/login"));
+        this.mvc.perform(get("/")).andExpect(view().name("index"));
 
 
     }
