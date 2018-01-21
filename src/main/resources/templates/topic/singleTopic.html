@@ -9,7 +9,8 @@
 
 <section layout:fragment="mainContent">
 
-  <form class="col s12" action="#" th:action="@{'/projets/'+ ${projet.id}+'/topics/save'}" th:object="${topic}" th:method="post">
+  <form class="col s12" action="#" th:action="@{'/projets/'+ ${projet.id}+'/topics/save'}"
+        th:object="${topic}" th:method="post">
 
     <!-- ID -->
     <div class="row">
@@ -53,10 +54,6 @@
 </section>
 
 <script layout:fragment="script" th:replace="layout/rights :: rights_js">
-  //remove hidden fields that prevent checkbox from showing
-  $(document).ready(function () {
-    $('input[name=_ouvert]').remove();
-  });
 </script>
 
 </html>

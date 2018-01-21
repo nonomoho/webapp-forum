@@ -128,6 +128,10 @@ public class TopicController {
         topic.setCreateur(utilisateur);
         topic.setFollowerList(new HashSet<Utilisateur>());
         topic.getFollowerList().add(utilisateur);
+      } else {
+        Topic originial = tr.findOne(topic.getId());
+        topic.setCreation(originial.getCreation());
+        topic.setCreateur(originial.getCreateur());
       }
       topic.setProjet(projet);
       Topic topicSaved = tr.save(topic);
@@ -138,13 +142,11 @@ public class TopicController {
       ps.setPermission(topicSaved);
 
       //only current user will get the write to edit it
-      if (topic.getId().isEmpty()){
-        Permission permission = new Permission();
-        permission.setTargetPermission(topicSaved);
-        permission.setType(TypePermissionEnum.EDIT);
-        permission.setUtilisateur(utilisateur);
-        permr.save(permission);
-      }
+      Permission permission = new Permission();
+      permission.setTargetPermission(topicSaved);
+      permission.setType(TypePermissionEnum.EDIT);
+      permission.setUtilisateur(utilisateur);
+      permr.save(permission);
 
       return "redirect:/projets/{id}/topics";
     }

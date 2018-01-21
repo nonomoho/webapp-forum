@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 public class Topic extends TargetPermission {
 
   private String nom;
-  private Boolean ouvert;
+  private boolean ouvert;
   @ManyToOne
   private Utilisateur createur;
   private Date creation;
