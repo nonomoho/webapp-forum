@@ -59,7 +59,7 @@ public class TopicControllerTest {
 
     UtilisateurRepository ur = mock(UtilisateurRepository.class);
 
-
+    PermissionRepository permr = mock(PermissionRepository.class);
 
     @InjectMocks
     TopicController topicController;

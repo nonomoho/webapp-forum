@@ -48,9 +48,5 @@ public class MessageTest {
     messageService.addMessages(10000);
   }
 
-  @Test
-  public  void testMessages2() throws Exception {
-    this.mvc.perform(get("/test"));
-  }
 
 }
