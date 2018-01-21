@@ -16,7 +16,7 @@ public class Message {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-   @DateTimeFormat(pattern="dd-MMM-YYYY")
+    @DateTimeFormat(pattern="dd-MMM-YYYY")
     private Date date;
     @ManyToOne
     private Utilisateur utilisateur;

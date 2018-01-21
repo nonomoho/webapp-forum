@@ -40,7 +40,7 @@
 
 
   <form class="col s12" action="#"
-        th:action="@{'/projets/'+ ${projet.id} + '/topics/'+ ${topic.id} + '/messages/save'}"
+        th:action="@{'/projets/'+ ${topic.projet.id} + '/topics/'+ ${topic.id} + '/messages/save'}"
         th:object="${message}" th:method="post">
 
     <textarea id="froala-editor" th:field="*{contenu}"></textarea>
@@ -54,9 +54,9 @@
 
 </section>
 
-<!--<script layout:fragment="script">
+<script layout:fragment="script">
   function maFunction() {
-    alert($("#froala-editor").length)
+    alert(value.length);
   }
-</script>-->
+</script>
 </html>
