@@ -43,7 +43,6 @@ public class FollowServiceTest {
 
     Utilisateur user;
 
-    Topic topic;
 
     @Before
     public void onSetUp() throws Exception {
