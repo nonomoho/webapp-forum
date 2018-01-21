@@ -62,19 +62,31 @@ public class MessageController {
       @PathVariable("idTopic") String idTopic, Model model) {
     model.addAttribute("message", new Message());
     Projet projet = pr.findOne(id);
+    //model.addAttribute("topic", topic);
+    model.addAttribute("projet", projet);
+    return "message/message";
+  }
+
+ /* @GetMapping(value = "/projets/{id}/topics/{idTopic}/messages/add")
+  public String addMessageForm(@PathVariable("id") String id,@PathVariable("idTopic") String idTopic, Model model) {
+    model.addAttribute("message", new Message());
+    Projet projet = pr.findOne(id);
     Topic topic = tr.findOne(idTopic);
     model.addAttribute("topic", topic);
     model.addAttribute("projet", projet);
-    return "message/formMessage";
+    return "message/message";
 
-  }
+  }*/
 
 
   @PostMapping(value = "projets/{id}/topics/{idTopic}/messages/save")
   public String addMessage(@PathVariable("idTopic") String idTopic,
       @ModelAttribute("message") @Valid Message message) throws MessagingException {
     Topic topic = tr.findOne(idTopic);
-    message.setContenu(message.getContenu());
+    /*System.out.println("----------------------");
+    System.out.println(message.getContenu().length());
+    System.out.println("----------------------");*/
+
     message.setDate(new Date());
     Utilisateur utilisateur = us.getLoggedUser();
     message.setUtilisateur(utilisateur);

@@ -20,20 +20,43 @@
   </nav>
 
   <div th:each="message : ${messageList}">
-    <div class="col s12 m7">
-      <div class="card horizontal">
-        <div class="card-image">
-          <p th:text="${message?.utilisateur?.pseudo}"/>
-          <p th:text="${message?.date}"/>
+
+    <div class="col s12 m6">
+      <div class="card blue-grey lighten-5">
+        <div class="card-content black-text">
+          <p th:utext="${message?.contenu}"/>
         </div>
-        <div class="card-stacked">
-          <div class="card-content">
-            <p th:text="${message?.contenu}"/>
-          </div>
+        <div class="card-action">
+          <span th:text="#{message.contenu}"/>
+          <b><span th:text="${message?.utilisateur?.pseudo}"/></b>
+          <span th:text="#{message.date}"/>
+          <b><span th:text="${#dates.format(message?.date, 'dd-MM-yyyy')}"/></b>
         </div>
       </div>
     </div>
+
   </div>
 
+
+
+  <form class="col s12" action="#"
+        th:action="@{'/projets/'+ ${projet.id} + '/topics/'+ ${topic.id} + '/messages/save'}"
+        th:object="${message}" th:method="post">
+
+    <textarea id="froala-editor" th:field="*{contenu}"></textarea>
+    <!-- SUBMIT -->
+    <button onclick="maFunction()" class="btn waves-effect waves-light" type="post" name="action">
+      <span th:text="#{add}"></span>
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+
+
 </section>
+
+<!--<script layout:fragment="script">
+  function maFunction() {
+    alert($("#froala-editor").length)
+  }
+</script>-->
 </html>
