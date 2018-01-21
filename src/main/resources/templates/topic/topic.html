@@ -44,13 +44,15 @@
           <h5 th:text="${topic?.nom}"/>
         </a>
       </td>
+
+
       <td>
-        <p th:text="${topic?.ouvert}"/>
+        <i th:class="material-icons" th:text="${topic?.ouvert == true ? 'lock_open' : 'lock'}"></i>
       </td>
       <td>
         <span th:text="#{topic.by}"></span>
         <p th:text="${topic?.createur?.pseudo}"/>
-        <p th:text="${topic?.creation}"/>
+        <p th:text="${#dates.format(topic?.creation, 'dd-MM-yyyy')}"/>
       </td>
       <td sec:authorize="isAuthenticated()">
         <form class="col s12" action="#" th:action="@{'/topics/'+ ${topic.id}+'/follow'}"

@@ -95,6 +95,7 @@ public class TopicController {
     Projet projet = pr.findOne(id);
     model.addAttribute("projet", projet);
     ps.getPermission(projet);
+    topic.setOuvert(true);
     topic.setReadUsers(projet.getReadUsers());
     topic.setWriteUsers(projet.getWriteUsers());
     topic.setNeedAuth(projet.getNeedAuth());
