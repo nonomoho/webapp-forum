@@ -1,6 +1,8 @@
 package com.miage.m2.webappforum.control;
 
+import com.miage.m2.webappforum.AOC.LogExecutionTimes;
 import com.miage.m2.webappforum.entity.Message;
+import com.miage.m2.webappforum.entity.Projet;
 import com.miage.m2.webappforum.entity.Topic;
 import com.miage.m2.webappforum.entity.Utilisateur;
 import com.miage.m2.webappforum.repository.MessageRepository;
@@ -8,12 +10,15 @@ import com.miage.m2.webappforum.repository.ProjetRepository;
 import com.miage.m2.webappforum.repository.TopicRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.UserService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +50,7 @@ public class MessageController {
   @Autowired
   private JavaMailSender sender;
 
-
+  @LogExecutionTimes
   @PreAuthorize("hasPermission(#idTopic, 'Topic', T(com.miage.m2.webappforum.entity.TypePermissionEnum).READ)")
   @GetMapping(value = "/projets/{id}/topics/{idTopic}/messages")
   public String getAllMessageTopic(@PathVariable("id") String id,
@@ -116,5 +121,37 @@ public class MessageController {
 
   }
 
+//  @Transactional
+//  public String add1000Messages() {
+//    System.out.println("Bonjour je suis là");
+////    Projet projet = new Projet();
+////    projet.setNom("projet");
+//////    pr.save(projet);
+////
+//    Utilisateur utilisateur = new Utilisateur();
+//    utilisateur.setPseudo("test");
+//    utilisateur.setEmail("test@test.test");
+//    utilisateur.setPassword("test");
+//    utilisateur.setInscription(new Date());
+//    ur.save(utilisateur);
+//
+////    Topic topic = new Topic();
+////    topic.setProjet(projet);
+////    topic.setCreateur(utilisateur);
+////    topic.setNom("topic");
+////    tr.save(topic);
+//
+//    List<Message> messages = new ArrayList<>();
+//    for (int i = 0; i < 1000; i++) {
+//      Message message = new Message();
+//      message.setUtilisateur(utilisateur);
+//      message.setDate(new Date());
+//      message.setContenu("test content");
+//      messages.add(message);
+//    }
+//    mr.save(messages);
+//  return "ok";
+//  }
+//
 
 }
