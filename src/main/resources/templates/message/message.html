@@ -19,6 +19,8 @@
     </div>
   </nav>
 
+
+
   <div th:each="message : ${messageList}">
 
     <div class="col s12 m6">
@@ -42,6 +44,15 @@
   <form class="col s12" action="#"
         th:action="@{'/projets/'+ ${topic.projet.id} + '/topics/'+ ${topic.id} + '/messages/save'}"
         th:object="${message}" th:method="post">
+
+    <div class="row">
+      <div th:if="${#fields.hasErrors('contenu')}">
+        <div class="col s12 card-panel red darken-1 center-align">
+          <span th:errors="*{contenu}"/>
+        </div>
+      </div>
+    </div>
+
 
     <textarea id="froala-editor" th:field="*{contenu}"></textarea>
     <!-- SUBMIT -->

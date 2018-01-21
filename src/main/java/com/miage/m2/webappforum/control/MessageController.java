@@ -62,11 +62,12 @@ public class MessageController {
       @ModelAttribute("message") @Valid Message message, BindingResult result) throws MessagingException {
 
     if (result.hasErrors()){
+      result.getAllErrors().toString();
       Topic topic = tr.findOne(idTopic);
       model.addAttribute("messageList", topic.getMessageList());
       model.addAttribute("topic", topic);
       model.addAttribute("message", message);
-      //result.rejectValue("contenu", "");
+      result.rejectValue("contenu", "message.contenuNotValid");
       return "message/message";
     }
 

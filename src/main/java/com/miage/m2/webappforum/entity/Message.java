@@ -20,7 +20,7 @@ public class Message {
     private Date date;
     @ManyToOne
     private Utilisateur utilisateur;
-    @Size(min=1, max=1000)
+    @Size(min=1, max=1000, message = "")
     private String contenu;
     //FIXME différencier texte brut et html ?
 
