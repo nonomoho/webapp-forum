@@ -119,29 +119,4 @@ public class MessageController {
 
   }
 
-//  @LogExecutionTimes
-//  @GetMapping("/test")
-//  public String add1000Messages() {
-//    System.out.println("lol");
-//
-//    Utilisateur utilisateur = new Utilisateur();
-//    utilisateur.setPseudo("test6");
-//    utilisateur.setEmail("test6@test.test");
-//    utilisateur.setPassword("test2");
-//    utilisateur.setInscription(new Date());
-//    ur.save(utilisateur);
-//
-//    List<Message> messages = new ArrayList<>();
-//    for (int i = 0; i < 1000; i++) {
-//      Message message = new Message();
-//      message.setUtilisateur(utilisateur);
-//      message.setDate(new Date());
-//      message.setContenu("test content");
-//      messages.add(message);
-//    }
-//    mr.save(messages);
-//    return "index";
-//  }
-
-
 }
