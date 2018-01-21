@@ -8,6 +8,7 @@ import com.miage.m2.webappforum.entity.TypePermissionEnum;
 import com.miage.m2.webappforum.entity.Utilisateur;
 import com.miage.m2.webappforum.repository.PermissionRepository;
 import com.miage.m2.webappforum.repository.TargetPermissionRepository;
+import com.miage.m2.webappforum.repository.TopicRepository;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,6 +25,8 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
 
   @Autowired
   PermissionRepository pr;
+  @Autowired
+  TopicRepository tr;
 
   @Autowired
   TargetPermissionRepository tpr;
@@ -67,6 +70,10 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
       return false;
     }
     return topic.getCreateur().equals(us.getLoggedUser());
+  }
+
+  public boolean isOwner(String topic) {
+    return  isOwner(tr.findOne(topic));
   }
 
 

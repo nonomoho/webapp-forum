@@ -22,21 +22,18 @@ public class UtilisateurController {
   @Autowired
   UtilisateurRepository ur;
   @Autowired
+  RoleRepository rr;
+
+  @Autowired
   private PasswordEncoder passwordEncoder;
 
   @Autowired
   UserService us;
 
-  @Autowired
-  RoleRepository rr;
 
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping(value = "/users")
   public String getAllUsers(Model model) {
-    System.out.println("--------------------------------");
-    System.out.println(ur.findAll(us.getLoggedUser()));
-    System.out.println("--------------------------------");
-
     model.addAttribute("utilisateurs", ur.findAll(us.getLoggedUser()));
     return "user/users";
   }

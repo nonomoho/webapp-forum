@@ -64,9 +64,8 @@
              <i class="material-icons" th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
          </a>-->
       </td>
-      <td th:if="${@userPermissionEvaluator.isOwner(topic)}">
-        <a sec:authorize="hasAuthority('ADMIN')"
-           th:href="@{'/projets/'+ ${topic.projet.id}+'/topics/edit/'+${topic.id}}">
+      <td th:if="${@userPermissionEvaluator.hasPermission(null, topic, T(com.miage.m2.webappforum.entity.TypePermissionEnum).EDIT)}">
+        <a th:href="@{'/projets/'+ ${topic.projet.id}+'/topics/edit/'+${topic.id}}">
           <span th:text="#{edit}"></span>
         </a>
       </td>

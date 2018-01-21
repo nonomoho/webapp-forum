@@ -1,7 +1,9 @@
 package com.miage.m2.webappforum.control;
 
+import com.miage.m2.webappforum.entity.Permission;
 import com.miage.m2.webappforum.entity.Projet;
 import com.miage.m2.webappforum.entity.Topic;
+import com.miage.m2.webappforum.entity.TypePermissionEnum;
 import com.miage.m2.webappforum.entity.Utilisateur;
 import com.miage.m2.webappforum.repository.PermissionRepository;
 import com.miage.m2.webappforum.repository.ProjetRepository;
@@ -42,6 +44,7 @@ public class TopicController {
   PermissionService ps;
 
 
+  @PreAuthorize("isAuthenticated()")
   @GetMapping(value = "/followedTopics")
   public String getFollowedTopics(Model model) {
 
@@ -68,7 +71,7 @@ public class TopicController {
     return "topic/topic";
   }
 
-
+  @PreAuthorize("isAuthenticated()")
   @PostMapping(value = "/topics/{idTopic}/follow")
   public String addTopicFollowing(@PathVariable("idTopic") String topicId) {
     Topic topic = tr.findOne(topicId);
@@ -100,6 +103,7 @@ public class TopicController {
 
   }
 
+  @PreAuthorize("hasPermission(#id, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE)")
   @PostMapping(value = "projets/{id}/topics/save")
   public String addTopic(Model model, @PathVariable("id") String id,
       @ModelAttribute("topic") @Valid Topic topic,
@@ -132,12 +136,21 @@ public class TopicController {
       topicSaved.setWriteUsers(topic.getWriteUsers());
       ps.setPermission(topicSaved);
 
+      //only current user will get the write to edit it
+      if (topic.getId().isEmpty()){
+        Permission permission = new Permission();
+        permission.setTargetPermission(topicSaved);
+        permission.setType(TypePermissionEnum.EDIT);
+        permission.setUtilisateur(utilisateur);
+        permr.save(permission);
+      }
+
       return "redirect:/projets/{id}/topics";
     }
 
   }
 
-
+  @PreAuthorize("hasPermission(#idTopic, 'Topic', T(com.miage.m2.webappforum.entity.TypePermissionEnum).EDIT)")
   @GetMapping(value = "/projets/{idProjet}/topics/edit/{idTopic}")
   public String editTopicForm(Model model, @PathVariable("idProjet") String idProjet,
       @PathVariable("idTopic") String idTopic) {
