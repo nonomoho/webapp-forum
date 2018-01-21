@@ -3,25 +3,35 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/main">
 <head>
-    <title>Utilisateurs</title>
+  <title>Utilisateurs</title>
 </head>
+
 <section layout:fragment="mainContent">
-<table class="striped">
-        <thead>
-        <tr>
-            <th><span>Liste des utilisateurs</span></th>
 
-        </tr>
-        </thead>
-        <tbody>
-            <tr th:each="utilisateur : ${utilisateurs}">
-                <td>
-                    <a th:href="@{'/utilisateurs/'+ ${utilisateur.id}}"><h5 th:text="${utilisateur?.pseudo}"/></a>
+  <table class="striped">
 
-                </td>
-            </tr>
-        </tbody>
+    <thead>
+    <tr>
+      <th><span th:text="#{register.username}"></span></th>
+      <th><span th:text="#{register.email}"></span></th>
+      <th><span th:text="#{register.date}"></span></th>
+    </tr>
+    </thead>
 
-</table>
+    <tbody>
+    <tr th:each="utilisateur : ${utilisateurs}">
+      <td>
+        <p th:text="${utilisateur.pseudo}"/>
+      </td>
+      <td>
+        <p th:text="${utilisateur.email}"/>
+      </td>
+      <td>
+        <p th:text="${#dates.format(utilisateur.inscription, 'dd/MMM/yyyy')}"/>
+      </td>
+    </tr>
+    </tbody>
+
+  </table>
 </section>
 </html>

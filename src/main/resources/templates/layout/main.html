@@ -4,76 +4,96 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Layout</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/css/flag-icon.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/materialize-social@1.0.3/materialize-social.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <meta charset="UTF-8"/>
+  <title>Layout</title>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/css/flag-icon.css"/>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/materialize-social@1.0.3/materialize-social.css"/>
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <body class="grey lighten-5">
 
 <!-- navbar -->
 <div>
 
-    <ul id="langues" class="dropdown-content">
-        <li><a onclick="change('fr')">
-            <span class="flag-icon flag-icon-fr"></span>
-            <span th:text="#{lang.fr}"></span>
-        </a></li>
-        <li><a onclick="change('en')">
-            <span class="flag-icon flag-icon-gb"></span>
-            <span th:text="#{lang.en}"></span>
-        </a></li>
-    </ul>
+  <ul id="langues" class="dropdown-content">
+    <li><a onclick="change('fr')">
+      <span class="flag-icon flag-icon-fr"></span>
+      <span th:text="#{lang.fr}"></span>
+    </a></li>
+    <li><a onclick="change('en')">
+      <span class="flag-icon flag-icon-gb"></span>
+      <span th:text="#{lang.en}"></span>
+    </a></li>
+  </ul>
 
-    <nav class="amber">
-        <div class="nav-wrapper">
-            <a th:href="@{/}" class="brand-logo" style="padding-left: 15px">Forum</a>
-            <ul class="right hide-on-med-and-down">
-                <li sec:authorize="isAuthenticated()"><span th:text="#{hello} + ' '"/><span sec:authentication="name"/>
-                </li>
-                <li sec:authorize="isAuthenticated()">
-                    <form method="post" action="/logout" id="logout">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                        <a onclick="$('#logout').submit()" th:text="#{logout}"/>
-                    </form>
-                </li>
-                <li><a th:href="@{/projets}"><span th:text="#{projects}"></span></a>
-                </li>
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/followedTopics}"><span
-                        th:text="#{followedTopics}"></span></a></li>
-                <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><span th:text="#{login}"></span></a></li>
-                <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}"><span th:text="#{register}"></span></a>
-                </li>
-                <li><a class="dropdown-button" href="#!" data-activates="langues">
-                    <span th:text="#{languages}"></span>
-                    <i class="material-icons right">arrow_drop_down</i>
-                </a></li>
-            </ul>
-        </div>
+  <nav class="amber">
+    <div class="nav-wrapper">
+      <a th:href="@{/}" class="brand-logo" style="padding-left: 15px">Forum</a>
+      <ul class="right hide-on-med-and-down">
+        <li sec:authorize="isAuthenticated()"><span th:text="#{hello} + ' '"/><span
+            sec:authentication="name"/>
+        </li>
 
-    </nav>
+        <li><a th:href="@{/projets}"><span th:text="#{projects}"></span></a>
+        </li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/followedTopics}"><span
+            th:text="#{followedTopics}"></span></a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><span
+            th:text="#{login}"></span></a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}"><span
+            th:text="#{register}"></span></a>
+        </li>
+
+        <!-- Account or User-->
+        <li sec:authorize="isAuthenticated() and hasAuthority('ADMIN')">
+          <a th:href="@{/users}"><span th:text="#{users}"></span></a>
+        </li>
+        <li sec:authorize="isAuthenticated() and !hasAuthority('ADMIN')">
+          <a th:href="@{/account}"><span th:text="#{account}"></span></a>
+        </li>
+
+        <!-- Logout -->
+        <li sec:authorize="isAuthenticated()">
+          <form method="post" action="/logout" id="logout">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <a onclick="$('#logout').submit()" th:text="#{logout}"/>
+          </form>
+        </li>
+        <!-- Langues -->
+        <li><a class="dropdown-button" href="#!" data-activates="langues">
+          <span th:text="#{languages}"></span>
+          <i class="material-icons right">arrow_drop_down</i>
+        </a></li>
+      </ul>
+    </div>
+
+  </nav>
 </div>
 
 <!-- custom content -->
 <div class="container">
-    <section layout:fragment="mainContent">
-    </section>
+  <section layout:fragment="mainContent">
+  </section>
 </div>
 
 
 </body>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script>
-    function change(newLang) {
-        var url = new URL(location.href);
-        url.searchParams.set('lang', newLang);
-        window.location.replace(url);
-    }
+  function change(newLang) {
+    var url = new URL(location.href);
+    url.searchParams.set('lang', newLang);
+    window.location.replace(url);
+  }
 </script>
 
 <script layout:fragment="script">

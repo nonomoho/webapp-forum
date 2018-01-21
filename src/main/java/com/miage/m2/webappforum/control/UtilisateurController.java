@@ -1,67 +1,79 @@
 package com.miage.m2.webappforum.control;
 
-import com.miage.m2.webappforum.entity.Role;
 import com.miage.m2.webappforum.entity.Utilisateur;
 import com.miage.m2.webappforum.repository.RoleRepository;
 import com.miage.m2.webappforum.repository.UtilisateurRepository;
+import com.miage.m2.webappforum.service.UserService;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.Date;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UtilisateurController {
-    @Autowired
-    UtilisateurRepository ur;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    RoleRepository rr;
+  @Autowired
+  UtilisateurRepository ur;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
-    @GetMapping(value = "/users")
-    public String getAllUsers(Model model) {
-        model.addAttribute("utilisateurs", ur.findAll());
-        return "user/users";
+  @Autowired
+  UserService us;
+
+  @Autowired
+  RoleRepository rr;
+
+  @GetMapping(value = "/users")
+  public String getAllUsers(Model model) {
+    model.addAttribute("utilisateurs", ur.findAll());
+    return "user/users";
+  }
+
+  @GetMapping(value = "/account")
+  public String getUser(Model model) {
+    model.addAttribute("user", us.getLoggedUser());
+    return "user/singleUser";
+  }
+
+  @PostMapping(value = "/account/save")
+  public String addUser(Model model, @ModelAttribute("user") @Valid Utilisateur user,
+      BindingResult result,
+      @RequestParam(value = "password_confirm") String confirm) {
+
+    Utilisateur currentUser = us.getLoggedUser();
+    //if current password is not correct
+    if (!passwordEncoder.matches(user.getPassword(), currentUser.getPassword())) {
+      result.rejectValue("password", "wrongPassword");
     }
-
-    @GetMapping(value = "/users/{userId}")
-    public String getUser(Model model, @PathVariable("userId") String userId) {
-
-        model.addAttribute("users", ur.findOne(userId));
-        return "user/user";
+    //if user chose to change password
+    if (!user.getNewPassword().isEmpty() && !confirm.equals(user.getNewPassword())) {
+      result.rejectValue("newPassword", "notSamePassword");
     }
-    @PostMapping(value = "/utilisateur")
-    public String addUser(Model model, @ModelAttribute("user") @Valid Utilisateur user,
-                          BindingResult result,
-                          @RequestParam(value = "password_confirm") String confirm) {
-        if (!confirm.equals(user.getPassword())) {
-            result.rejectValue("password", "notSamePassword");
-        }
-        if (ur.existsByPseudo(user.getPseudo())) {
-            result.rejectValue("pseudo", "register.userNameAlreadyExist");
-        }
-        if (ur.existsByEmail(user.getEmail())) {
-            result.rejectValue("email", "register.mailAlreadyExist");
-        }
-        if (result.hasErrors()) {
-            model.addAttribute("user", user);
-            return "user/user";
-        } else {
-            user.setInscription(new Date());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            ur.save(user);
-
-            Role role = rr.getRoleByName("USER");
-            role.getUtilisateurs().add(user);
-            rr.save(role);
-
-            return "redirect:/user/user";
-        }
+    //if user chose to change email adress
+    if (ur.existsByEmail(user.getEmail()) && !user.getEmail().equals(currentUser.getEmail())) {
+      result.rejectValue("email", "register.mailAlreadyExist");
     }
+    if (result.hasErrors()) {
+      System.out.println("error");
+      System.out.println(result.getAllErrors().toString());
+      model.addAttribute("user", user);
+      return "user/singleUser";
+    } else {
+      if (!user.getNewPassword().isEmpty()) {
+        user.setPassword(passwordEncoder.encode(user.getNewPassword()));
+      }else{
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+      }
+      user.setInscription(currentUser.getInscription());
+      ur.save(user);
+
+      return "redirect:/";
+    }
+  }
 }

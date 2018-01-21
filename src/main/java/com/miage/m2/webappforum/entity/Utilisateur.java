@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.transaction.Transactional;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -36,6 +38,9 @@ public class Utilisateur implements UserDetails {
   private Date inscription;
   @ManyToMany(mappedBy = "utilisateurs", fetch = FetchType.EAGER)
   private Set<Role> roles;
+
+  @Transient //used to change password
+  private String newPassword;
 
   public Utilisateur() {
   }
@@ -127,4 +132,11 @@ public class Utilisateur implements UserDetails {
     return true;
   }
 
+  public String getNewPassword() {
+    return newPassword;
+  }
+
+  public void setNewPassword(String newPassword) {
+    this.newPassword = newPassword;
+  }
 }
