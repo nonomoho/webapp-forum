@@ -13,7 +13,7 @@
   <div class="left-align" th:unless="${follow}">
     <a th:if="${@userPermissionEvaluator.hasPermission(null, projet, T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE)}"
        th:href="@{'/projets/'+ ${projet.id}+'/topics/add'}"
-       class="waves-effect waves-light btn-large teal lighten-2">
+       class="waves-effect waves-light btn-large  teal lighten-2">
       <span th:text="#{add}"></span>
     </a>
   </div>
@@ -57,7 +57,7 @@
       <td sec:authorize="isAuthenticated()">
         <form class="col s12" action="#" th:action="@{'/topics/'+ ${topic.id}+'/follow'}"
               th:method="post">
-          <button class="btn-floating btn-large teal lighten-3" type="submit" name="action">
+          <button class="btn-floating btn-large  teal lighten-2" type="submit" name="action">
             <i class="material-icons"
                th:text="${topic.followedByUser} == true ? 'visibility' : 'visibility_off'"></i>
           </button>
