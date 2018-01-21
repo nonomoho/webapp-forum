@@ -6,6 +6,7 @@ import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.UserService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,18 +30,21 @@ public class UtilisateurController {
   @Autowired
   RoleRepository rr;
 
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping(value = "/users")
   public String getAllUsers(Model model) {
     model.addAttribute("utilisateurs", ur.findAll());
     return "user/users";
   }
 
+  @PreAuthorize("hasAuthority('USER')")
   @GetMapping(value = "/account")
   public String getUser(Model model) {
     model.addAttribute("user", us.getLoggedUser());
     return "user/singleUser";
   }
 
+  @PreAuthorize("hasAuthority('USER')")
   @PostMapping(value = "/account/save")
   public String addUser(Model model, @ModelAttribute("user") @Valid Utilisateur user,
       BindingResult result,
@@ -67,7 +71,7 @@ public class UtilisateurController {
     } else {
       if (!user.getNewPassword().isEmpty()) {
         user.setPassword(passwordEncoder.encode(user.getNewPassword()));
-      }else{
+      } else {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
       }
       user.setInscription(currentUser.getInscription());
