@@ -39,9 +39,8 @@
 
   </div>
 
-
-
   <form class="col s12" action="#"
+        th:if="${@userPermissionEvaluator.hasPermission(null, topic, T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE) and topic?.ouvert == true}"
         th:action="@{'/projets/'+ ${topic.projet.id} + '/topics/'+ ${topic.id} + '/messages/save'}"
         th:object="${message}" th:method="post">
 
@@ -61,13 +60,7 @@
       <i class="material-icons right">send</i>
     </button>
   </form>
-
-
+  
 </section>
 
-<script layout:fragment="script">
-  function maFunction() {
-    alert(value.length);
-  }
-</script>
 </html>
