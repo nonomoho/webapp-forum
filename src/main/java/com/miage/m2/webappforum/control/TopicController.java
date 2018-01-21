@@ -87,7 +87,7 @@ public class TopicController {
   @PreAuthorize("hasPermission(#id, 'Projet', T(com.miage.m2.webappforum.entity.TypePermissionEnum).WRITE)")
   @GetMapping(value = "/projets/{id}/topics/add")
   public String addTopicForm(@PathVariable("id") String id, Model model) {
-    model.addAttribute("users", ur.findAll());
+    model.addAttribute("users", ur.findAll(us.getLoggedUser()));
     Topic topic = new Topic();
     Projet projet = pr.findOne(id);
     model.addAttribute("projet", projet);
@@ -110,7 +110,7 @@ public class TopicController {
       result.rejectValue("nom", "topic.nameAlreadyExist");
     }
     if (result.hasErrors()) {
-      model.addAttribute("users", ur.findAll());
+      model.addAttribute("users", ur.findAll(us.getLoggedUser()));
       model.addAttribute("topic", topic);
       model.addAttribute("projet", projet);
       return "topic/singleTopic";
@@ -144,7 +144,7 @@ public class TopicController {
     Topic topic = tr.findOne(idTopic);
     model.addAttribute("projet", pr.findOne(idProjet));
     model.addAttribute("topic", topic);
-    model.addAttribute("users", ur.findAll());
+    model.addAttribute("users", ur.findAll(us.getLoggedUser()));
     ps.getPermission(topic);
 
     return "topic/singleTopic";

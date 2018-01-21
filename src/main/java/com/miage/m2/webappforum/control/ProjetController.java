@@ -42,7 +42,7 @@ public class ProjetController {
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping(value = "/projets/add")
   public String addProjectForm(Model model) {
-    model.addAttribute("users", ur.findAll());
+    model.addAttribute("users", ur.findAll(us.getLoggedUser()));
     model.addAttribute("project", new Projet());
     return "projet/singleProject";
   }
@@ -58,7 +58,7 @@ public class ProjetController {
     }
     if (result.hasErrors()) {
       model.addAttribute("project", project);
-      model.addAttribute("users", ur.findAll());
+      model.addAttribute("users", ur.findAll(us.getLoggedUser()));
       return "projet/singleProject";
     } else {
       Projet saveProjet = pr.save(project);
@@ -74,7 +74,7 @@ public class ProjetController {
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping(value = "/projets/edit/{idProjet}")
   public String editProjetForm(Model model, @PathVariable("idProjet") String idProjet) {
-    model.addAttribute("users", ur.findAll());
+    model.addAttribute("users", ur.findAll(us.getLoggedUser()));
     Projet project = pr.findOne(idProjet);
 
     ps.getPermission(project);

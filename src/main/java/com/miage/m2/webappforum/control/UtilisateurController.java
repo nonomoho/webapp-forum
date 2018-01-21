@@ -33,7 +33,11 @@ public class UtilisateurController {
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping(value = "/users")
   public String getAllUsers(Model model) {
-    model.addAttribute("utilisateurs", ur.findAll());
+    System.out.println("--------------------------------");
+    System.out.println(ur.findAll(us.getLoggedUser()));
+    System.out.println("--------------------------------");
+
+    model.addAttribute("utilisateurs", ur.findAll(us.getLoggedUser()));
     return "user/users";
   }
 
