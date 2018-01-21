@@ -4,6 +4,7 @@ package com.miage.m2.webappforum.testIntegration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.miage.m2.webappforum.WebappForumApplication;
 
+import com.miage.m2.webappforum.configuration.Security;
 import com.miage.m2.webappforum.control.MessageController;
 import com.miage.m2.webappforum.control.ProjetController;
 import com.miage.m2.webappforum.entity.Message;
@@ -27,6 +28,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -46,13 +50,16 @@ import java.util.Date;
 import static org.codehaus.groovy.runtime.DefaultGroovyMethods.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
-@SpringBootTest(classes = WebappForumApplication.class)
+@SpringBootTest(classes = {WebappForumApplication.class})
 @WebAppConfiguration
 public class ProjetControllerTest {
 
@@ -72,9 +79,10 @@ public class ProjetControllerTest {
 
     Projet projetPost;
 
+    Projet projetEditPost;
+
 
     private JacksonTester<Projet> jsonTester;
-
 
 
 
@@ -85,12 +93,14 @@ public class ProjetControllerTest {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/resources/templates/projet");
         resolver.setSuffix(".html");
-        this.mvc = standaloneSetup(proj).setViewResolvers(resolver).alwaysExpect(status().isOk()).build();
+        this.mvc = standaloneSetup(proj).alwaysExpect(status().isOk()).setViewResolvers(resolver).build();
         Projet projet = new Projet();
         projet.setId("2");
         projet.setNom("COUCOU");
         projet.setDescription("coucou");
         pr.save(projet);
+        projetEditPost = projet;
+
 
         Projet projet2 = new Projet();
         projet.setId("3");
@@ -124,11 +134,12 @@ public class ProjetControllerTest {
 
     }
 
-   /* @Test
-    public void testAddMessage() throws Exception {
+    @Test
+    public void testEditMessage() throws Exception {
 
-        this.mvc.perform(get("/projets/2/topics/2/messages/add")).andExpect(view().name("projets/2/topics/2/messages/add"));
+        this.mvc.perform(get("/projets/edit/2"))
+                .andExpect(status().isOk());
 
-    } */
+    }
 
 }
