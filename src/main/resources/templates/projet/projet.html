@@ -4,38 +4,40 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="layout/main">
 <head>
-    <title>Projet</title>
+  <title>Projet</title>
 </head>
 
 
 <section layout:fragment="mainContent">
+  <div class="right-align">
+    <a class="waves-effect waves-light btn-large" sec:authorize="hasAuthority('ADMIN')"
+       th:href="@{'/projets/add'}"><span th:text="#{add}"></span></a>
+  </div>
+  <table class="striped">
+    <thead>
+    <tr>
+      <th><span th:text="#{project.name}"></span></th>
+      <th><span th:text="#{project.topic}"></span></th>
+      <th sec:authorize="hasAuthority('ADMIN')"><span th:text="#{edit}"></span></th>
+    </tr>
+    </thead>
 
-    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{'/projets/add'}"><span th:text="#{add}"></span></a>
-
-    <table class="striped">
-        <thead>
-        <tr>
-            <th><span th:text="#{project.name}"></span></th>
-            <th><span th:text="#{project.topic}"></span></th>
-            <th sec:authorize="hasAuthority('ADMIN')"><span th:text="#{edit}"></span></th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr th:each="projet : ${projets}">
-            <td>
-                <a th:href="@{'/projets/'+ ${projet.id}+'/topics'}"><h5 th:text="${projet?.nom}"/></a>
-                <p th:text="${projet?.description}"/>
-            </td>
-            <td>
-                <p th:text="${#lists.size(projet.topicList)}"/>
-            </td>
-            <td>
-                <a sec:authorize="hasAuthority('ADMIN')" th:href="@{'/projets/edit/'+ ${projet.id}}"><span th:text="#{edit}"></span></a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <tbody>
+    <tr th:each="projet : ${projets}">
+      <td>
+        <a th:href="@{'/projets/'+ ${projet.id}+'/topics'}"><h5 th:text="${projet?.nom}"/></a>
+        <p th:text="${projet?.description}"/>
+      </td>
+      <td>
+        <p th:text="${#lists.size(projet.topicList)}"/>
+      </td>
+      <td>
+        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{'/projets/edit/'+ ${projet.id}}"><span
+            th:text="#{edit}"></span></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 </section>
 </html>

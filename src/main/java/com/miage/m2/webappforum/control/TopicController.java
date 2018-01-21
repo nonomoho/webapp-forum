@@ -10,7 +10,7 @@ import com.miage.m2.webappforum.repository.UtilisateurRepository;
 import com.miage.m2.webappforum.service.PermissionService;
 import com.miage.m2.webappforum.service.UserService;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +106,7 @@ public class TopicController {
       BindingResult result) {
     Projet projet = pr.findOne(id);
     topic.setNom(topic.getNom().trim().toUpperCase());
-    if (topic.getId().isEmpty() && pr.existsByNom(topic.getNom())) {
+    if (topic.getId().isEmpty() && tr.existsByNomAndProjet(topic.getNom(), projet)) {
       result.rejectValue("nom", "topic.nameAlreadyExist");
     }
     if (result.hasErrors()) {
@@ -117,16 +117,15 @@ public class TopicController {
     } else {
       Utilisateur utilisateur = us.getLoggedUser();
 
-      topic.getFollowerList().add(utilisateur);
-
       //si le topic est crée
-      if (topic.getId() == null) {
+      if (topic.getId().isEmpty()) {
         topic.setCreation(new Date());
         topic.setCreateur(utilisateur);
+        topic.setFollowerList(new HashSet<Utilisateur>());
+        topic.getFollowerList().add(utilisateur);
       }
       topic.setProjet(projet);
       Topic topicSaved = tr.save(topic);
-
 
       //creation des permissions
       topicSaved.setReadUsers(topic.getReadUsers());

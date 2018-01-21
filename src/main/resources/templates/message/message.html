@@ -9,22 +9,30 @@
 
 <section layout:fragment="mainContent">
 
-  <h4 th:text="${topic?.nom}"/>
+  <nav>
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <a th:href="@{'/projets/'+ ${topic.projet.id}+'/topics'}" class="breadcrumb"
+           th:text="${topic.projet.nom}"></a>
+        <a class="breadcrumb" th:text="${topic.nom}"></a>
+      </div>
+    </div>
+  </nav>
 
   <div th:each="message : ${messageList}">
-  <div class="col s12 m7">
-    <div class="card horizontal">
-      <div class="card-image">
-        <p th:text="${message?.utilisateur?.pseudo}"/>
-        <p th:text="${message?.date}"/>
-      </div>
-      <div class="card-stacked">
-        <div class="card-content">
-          <p th:text="${message?.contenu}"/>
+    <div class="col s12 m7">
+      <div class="card horizontal">
+        <div class="card-image">
+          <p th:text="${message?.utilisateur?.pseudo}"/>
+          <p th:text="${message?.date}"/>
+        </div>
+        <div class="card-stacked">
+          <div class="card-content">
+            <p th:text="${message?.contenu}"/>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
 </section>
